@@ -3,10 +3,12 @@ class Consts_game:
         self.WIN_WIDTH =  1024
         self.WIN_HEIGHT = 768
         self.WIN_TITLE = 'Zajko usko'
-        self.ROCK_LEFT_OFFSET =  180
-        self.ROCK_TOP_OFFSET = 500
-        self.ROCK_NUM =  8
-        self.INS_NUM = 10
+        self.BUNNY_WIDTH = 135
+        self.ROCK_TOP_OFFSET = 480
+        self.ROCK_NUM = 6
+        self.ins_num = 10
+        self.ROCK_WIDTH = self.WIN_WIDTH // (self.ROCK_NUM + 1)
+        self.rock_height = None
 
 class Consts_colors:
     def __init__(self):
