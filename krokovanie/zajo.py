@@ -8,7 +8,6 @@ TODO:
  - najst pekny font - spravit appku na zobrazenie vsetkych dostupnych ttf
  - spravit okno ked user zle klikne na kamen tak vypisat nieco take ako zle
  - spravit animaciu nad kamenom
- - na zaciatku kazdeho levelu sa kamena animuju na svoje miestoF
 """
 #imports
 import pygame as pg
@@ -33,7 +32,7 @@ def main():
     #init the object
     level = Level(1, pg)
     #get height for rocks
-    h_rocks = level.random_rock_height(consts.ROCK_NUM, consts.ROCK_TOP_OFFSET)
+    level.random_rock_height(consts.ROCK_NUM, consts.ROCK_TOP_OFFSET)
     #get images and get height of rocks
     images, consts.rock_height = level.load_images(consts.ROCK_WIDTH)
     #set up the text
@@ -47,6 +46,7 @@ def main():
     #mouse
     mouse_coor = [None, None]
     mouse_clicked = False
+    count_jump = -1
     #run the game
     level.gameRunning = True
     while level.gameRunning:
@@ -55,19 +55,32 @@ def main():
             for y in range(int(consts.WIN_HEIGHT/images["grass"].get_height()+1)):
                 screen.blit(images["grass"], (x*images["grass"].get_width(), y*images["grass"].get_height()))
         # place start rock
-        screen.blit(images["rock"], (0,460))
-        # place bunny
-        screen.blit(images["bunny"], (0,260))
+        screen.blit(images["rock"], level.rocks_coors(0,460))
         #place rocks
-        for i in range(len(h_rocks)):
-            y = h_rocks[i]
+        for i in range(len(level.h_rocks)):
+            y = level.h_rocks[i]
             x = i * consts.ROCK_WIDTH + consts.ROCK_WIDTH
-            screen.blit(images["rock"], (x, y))
+            screen.blit(images["rock"], level.rocks_coors(x,y))
+
+        level.start_anim()
+
+        if count_jump > 0 and level.isJumping == False:
+            level.isJumping = True
+            level.index_rock_jump = move_rock - count_jump
+            count_jump -= 1
+        elif count_jump == 0 and level.isJumping == False:
+            level.index_rock_jump = move_rock - count_jump
+            count_jump -= 1
+
         #place numbers under rocks
         for i in range(consts.ROCK_NUM + 1):
-            screen.blit(numbers_text[i], numbers_rect[i])
+            new_rect = numbers_rect[i].copy()
+            new_rect[1] = level.numbers_coors(new_rect[1])
+            screen.blit(numbers_text[i], new_rect)
+
         #place text
         screen.blit(intro_text, intro_rect)
+
         #place instructions
         left_offset = (consts.WIN_WIDTH - images["arrow_to"].get_rect().size[0] * consts.ins_num) // 2
         for i in range(len(ins)):
@@ -75,6 +88,9 @@ def main():
                 screen.blit(images["arrow_to"], (i*50 + left_offset, 200))
             elif ins[i] == 0:
                 screen.blit(images["arrow_back"], (i*50 + left_offset, 200))
+
+        # place bunny
+        screen.blit(images["bunny"], level.bunny_coors())
 
         pg.display.flip()
 
@@ -88,15 +104,19 @@ def main():
                 mouse_coor = event.pos
                 mouse_clicked = True
 
-        if mouse_clicked:
+        if mouse_clicked and not level.isJumping:
             #this will prevent to run this condition several times
             mouse_clicked = False
-            rockx, rocky = level.getRockAtPixel(*mouse_coor, h_rocks, consts.ROCK_WIDTH, consts.rock_height)
+            rockx, rocky = level.getRockAtPixel(*mouse_coor, consts.ROCK_WIDTH, consts.rock_height)
             if rockx != None and rocky != None:
                 index = getRockIndex(rockx)
                 if index == move_rock:
-                    print('win')
-                    level.gameRunning = False
+                    level.isJumping = True
+                    level.index_rock_jump = 0
+                    count_jump = move_rock - 1
+                #wrong click
+                else:
+                    print('wrong')
 
 if __name__ == "__main__":
     main()

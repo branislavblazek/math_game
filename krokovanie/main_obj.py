@@ -7,6 +7,17 @@ class Level:
         self.pg = pygame
         self.gameRunning = False
         self.initial_number = random.randint(5,10)
+        self.bunny_pos = (-135, 260)
+        self.bunny_jump = 10
+        self.bunny_jump_pos = self.bunny_jump
+        self.isJumping = False
+        self.h_rocks = None
+        self.index_rock_jump = -1
+        self.start = True
+        self.rock_animation_start = False
+        self.rock_animation_offset = 200
+        self.numbers_animation_start = False
+        self.numbers_animation_offset = 200
 
     def __repr__(self):
         return self.level_status
@@ -16,10 +27,10 @@ class Level:
         Returns the array of top offset
         for the rocks.
         """
-        h_rocks = []
-        for _ in range(n):
-            h_rocks.append(top + random.randint(0,60))
-        return h_rocks
+        rocks_height = []
+        for i in range(n):
+            rocks_height.append(top + random.randint(0,60))
+        self.h_rocks = rocks_height
 
     def load_images(self, width):
         images = {
@@ -110,9 +121,57 @@ class Level:
 
             return ins, move_rock
 
-    def getRockAtPixel(self, x, y, h_rocks, width, height):
-        for rock in range(len(h_rocks)):
-            hitBox = self.pg.Rect(rock * width + width, h_rocks[rock], width, height)
+    def getRockAtPixel(self, x, y, width, height):
+        for rock in range(len(self.h_rocks)):
+            hitBox = self.pg.Rect(rock * width + width, self.h_rocks[rock], width, height)
             if hitBox.collidepoint(x,y):
-                return (rock * width + width, h_rocks[rock])
+                return (rock * width + width, self.h_rocks[rock])
         return (None, None)
+
+    def bunny_coors(self):
+        if self.isJumping:
+            x = self.bunny_pos[0]
+            y = self.bunny_pos[1]
+            if self.index_rock_jump > -1:
+                height = self.h_rocks[self.index_rock_jump]
+            else:
+                height = 260
+
+            if self.bunny_jump_pos >= -self.bunny_jump:
+                neg = -1 if self.bunny_jump_pos < 0 else 1
+                y -= int((self.bunny_jump_pos ** 2) * 0.5) * neg
+                self.bunny_jump_pos -= 1
+                x += 7
+            elif y + 258 >= height and self.bunny_jump_pos < 0:
+                self.bunny_jump_pos = self.bunny_jump
+                self.isJumping = False
+            elif self.bunny_jump_pos < -self.bunny_jump:
+                y += height - 480
+            else:
+                self.bunny_jump_pos = self.bunny_jump
+                self.isJumping = False
+            self.bunny_pos = (x, y)
+        return self.bunny_pos
+
+    def rocks_coors(self, x, y):
+        if self.rock_animation_start:
+            y = y + self.rock_animation_offset
+            self.rock_animation_offset -= 2
+            if self.rock_animation_offset == 0:
+                self.rock_animation_start = False
+        return x, y
+
+    def numbers_coors(self, y):
+        if self.numbers_animation_start:
+            y = y + self.numbers_animation_offset
+            self.numbers_animation_offset -= 2
+            if self.numbers_animation_offset <= 0:
+                self.numbers_animation_start = False
+        return y
+
+    def start_anim(self):
+        if self.start:
+            self.rock_animation_start = True
+            self.numbers_animation_start = True
+            self.isJumping = True
+            self.start = False
