@@ -1,13 +1,12 @@
 """
 V tejto hre je Zajo ktory krokuje podla pravidiel
 a ulohou je zisit kde skonci.
-Ked dopadne na spravne policko tak sa spusti animacia ako
-tam doskacka.
 V tejto hre budu levely, v kazdom leveli sa vytvori objekt.
 TODO:
- - najst pekny font - spravit appku na zobrazenie vsetkych dostupnych ttf
- - spravit okno ked user zle klikne na kamen tak vypisat nieco take ako zle
- - spravit animaciu nad kamenom
+ - najst pekny font - spravit appku na zobrazenie vsetkych dostupnych ttf]
+ - najst pekne pozadie pre hru
+ - spravit win akciu
+ - hodia sa tu levely
 """
 #imports
 import pygame as pg
@@ -42,7 +41,7 @@ def main():
     #set up instructions
     ins, move_rock = level.create_ins(consts.ins_num, consts.ROCK_NUM)
     ins_num = len(ins)
-    print(move_rock)
+    print('correct answer: ' + str(move_rock))
     #mouse
     mouse_coor = [None, None]
     mouse_clicked = False
@@ -55,12 +54,12 @@ def main():
             for y in range(int(consts.WIN_HEIGHT/images["grass"].get_height()+1)):
                 screen.blit(images["grass"], (x*images["grass"].get_width(), y*images["grass"].get_height()))
         # place start rock
-        screen.blit(images["rock"], level.rocks_coors(0,460))
+        screen.blit(images["rock"], level.rocks_coors(0,460, -2))
         #place rocks
         for i in range(len(level.h_rocks)):
             y = level.h_rocks[i]
             x = i * consts.ROCK_WIDTH + consts.ROCK_WIDTH
-            screen.blit(images["rock"], level.rocks_coors(x,y))
+            screen.blit(images["rock"], level.rocks_coors(x,y, i))
 
         level.start_anim()
 
@@ -104,19 +103,32 @@ def main():
                 mouse_coor = event.pos
                 mouse_clicked = True
 
+        rockx, rocky = level.getRockAtPixel(*mouse_coor, consts.ROCK_WIDTH, consts.rock_height)
+        if rockx != None and rocky != None and not level.isJumping:
+            index = getRockIndex(rockx) - 1
+            if index != level.rock_hover_index:
+                level.rock_old_hover_index = level.rock_hover_index
+                level.rock_old_hover_pos = level.rock_old_hover_height
+                level.rock_hover_index = index
+                level.rock_hover_pos = 0
+        elif level.rock_hover_index != -1 and not level.isJumping:
+            level.rock_old_hover_index = level.rock_hover_index
+            level.rock_old_hover_pos = level.rock_old_hover_height
+            level.rock_hover_index = -1
+
         if mouse_clicked and not level.isJumping:
             #this will prevent to run this condition several times
             mouse_clicked = False
-            rockx, rocky = level.getRockAtPixel(*mouse_coor, consts.ROCK_WIDTH, consts.rock_height)
             if rockx != None and rocky != None:
                 index = getRockIndex(rockx)
                 if index == move_rock:
                     level.isJumping = True
                     level.index_rock_jump = 0
                     count_jump = move_rock - 1
-                #wrong click
+                    print('teraz treba dorobit co sa stane')
                 else:
-                    print('wrong')
+                    level.shake_index = index - 1
+
 
 if __name__ == "__main__":
     main()

@@ -18,6 +18,16 @@ class Level:
         self.rock_animation_offset = 200
         self.numbers_animation_start = False
         self.numbers_animation_offset = 200
+        self.rock_hover_index = -1
+        self.rock_hover_height = 20
+        self.rock_hover_pos = 0
+        self.rock_old_hover_index = -1
+        self.rock_old_hover_height = self.rock_hover_height
+        self.rock_old_hover_pos = self.rock_old_hover_height
+        self.shake_width = 10
+        self.shake_pos = -self.shake_width
+        self.shake_index = -1
+        self.shake_count = 0
 
     def __repr__(self):
         return self.level_status
@@ -48,7 +58,7 @@ class Level:
         return images, new_height
 
     def generate_text(self, width, color):
-        intro_textObj = self.pg.font.SysFont('mistral', 46)
+        intro_textObj = self.pg.font.SysFont('bradleyhanditc', 46)
         intro_textSurfaceObj = intro_textObj.render('Klikni na kamen kde doskace Zajko podla pravidiel.', True, color)
         intro_textRectObj = intro_textSurfaceObj.get_rect()
         intro_textRectObj.center = (width//2,100)
@@ -153,12 +163,39 @@ class Level:
             self.bunny_pos = (x, y)
         return self.bunny_pos
 
-    def rocks_coors(self, x, y):
+    def rocks_coors(self, x, y, index):
         if self.rock_animation_start:
             y = y + self.rock_animation_offset
             self.rock_animation_offset -= 2
             if self.rock_animation_offset == 0:
                 self.rock_animation_start = False
+        elif self.rock_hover_index != -1 and index == self.rock_hover_index:
+            self.rock_hover_index_backup = self.rock_hover_index
+            y = self.h_rocks[self.rock_hover_index] - self.rock_hover_pos
+            if self.rock_hover_pos <= self.rock_hover_height:
+                self.rock_hover_pos += 3
+        elif self.rock_old_hover_index != -1 and self.rock_old_hover_index == index:
+            y = self.h_rocks[self.rock_old_hover_index] - self.rock_old_hover_pos
+            if self.rock_old_hover_pos >= 0:
+                self.rock_old_hover_pos -= 3
+
+        if self.shake_index != -1 and index == self.shake_index:
+            if self.shake_count == 0:
+                if self.shake_pos <= self.shake_width:
+                    x -= (self.shake_width - self.shake_pos)
+                    self.shake_pos += 5
+                else:
+                    self.shake_pos = -self.shake_width
+                    self.shake_count += 1
+            if self.shake_count == 1:
+                if self.shake_pos <= self.shake_width:
+                    x += (self.shake_width - self.shake_pos)
+                    self.shake_pos += 5
+                else:
+                    self.shake_pos = -self.shake_width
+                    self.shake_count = 0
+                    self.shake_index = -1
+
         return x, y
 
     def numbers_coors(self, y):
