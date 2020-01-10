@@ -23,6 +23,7 @@ to_del = (
     "javanesetext",
     "leelawadeeui",
     "leelawadeeuisemilight",
+    "leelawdb",
     "malgungothic",
     "malgungothicsemilight",
     "microsofthimalaya",
@@ -155,11 +156,15 @@ to_del = (
 for delete in to_del:
     if delete in fonts:
         fonts.remove(delete)
-    else:
-        print(delete)
 
 for index, i in enumerate(fonts):
-    objs.append(pygame.font.SysFont(i, 36))
+    try:
+        test = pygame.font.SysFont(i, 36)
+    except OSError:
+        continue
+    print(str(index) + ' ' + i )
+
+    objs.append(test)
     srfcs.append(objs[-1].render(str(index) + 'Ľúbim svet', True, BLACK))
     rect = srfcs[-1].get_rect()
     x = 0
