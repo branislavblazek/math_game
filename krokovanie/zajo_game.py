@@ -3,7 +3,6 @@ V tejto hre je Zajo ktory krokuje podla pravidiel
 a ulohou je zisit kde skonci.
 V tejto hre budu levely, v kazdom leveli sa vytvori objekt.
 TODO:
- - najst pekne pozadie pre hru
  - spravit win akciu
  - hodia sa tu levely
 """
@@ -34,9 +33,9 @@ pg.display.set_caption(const['window'].TITLE)
 def getRockIndex(x):
     return x // const['game'].ROCK_WIDTH
 
-def zajo_level(level_index):
+def zajo_level(level_status, level_max):
     #init the object
-    level = Level(level_index, pg)
+    level = Level(level_status, pg)
     #get height for rocks
     level.random_rock_height(const['game'].ROCK_NUM, const['game'].ROCK_TOP_OFFSET)
     #get images and get height of rocks
@@ -52,13 +51,22 @@ def zajo_level(level_index):
     mouse_coor = [0, 0]
     mouse_clicked = False
     count_jump = -1
-    #run the game
-    level.gameRunning = True
-    while level.gameRunning:
+    #level info text
+    level_font_obj = pg.font.Font('freesansbold.ttf', 32)
+    level_font_surface = level_font_obj.render(str(level_status) + " / " + str(level_max), True, const['color'].RED)
+    level_font_rect = level_font_surface.get_rect()
+    level_font_rect.center = (60, 32)
+
+    #main loop
+    level.start = True
+    while True:
         # fill the screen with the grass
         for x in range(int(const['window'].WIDTH/images["grass"].get_width()+1)):
             for y in range(int(const['window'].HEIGHT/images["grass"].get_height()+1)):
                 screen.blit(images["grass"], (x*images["grass"].get_width(), y*images["grass"].get_height()))
+        # place level info
+        screen.blit(level_font_surface, level_font_rect)
+
         # place start rock
         screen.blit(images["rock"], level.rocks_coors(0,460, -2))
         #place rocks
@@ -80,7 +88,8 @@ def zajo_level(level_index):
         #place numbers under rocks
         for i in range(const['game'].ROCK_NUM + 1):
             new_rect = numbers_rect[i].copy()
-            new_rect[1] = level.numbers_coors(new_rect[1])
+            is_last = True if i == const['game'].ROCK_NUM else False
+            new_rect[1] = level.numbers_coors(new_rect[1], is_last)
             screen.blit(numbers_text[i], new_rect)
         #place text
         screen.blit(intro_text, intro_rect)
@@ -128,9 +137,12 @@ def zajo_level(level_index):
                     count_jump = move_rock - 1
                 else:
                     level.shake_index = index - 1
+                    return 'max'
 
         #end game
         if level.index_rock_jump == move_rock:
-            return False
+            #level.fade_away()
+            return 'status'
 
+        #update display
         pg.display.flip()

@@ -5,29 +5,56 @@ class Level:
         #in level_status is number of level
         self.level_status = status
         self.pg = pygame
-        self.gameRunning = False
+        #start game
+        self.start = False
+        #number of first number under first rock
         self.initial_number = random.randint(5,10)
+        #start position of bunny
         self.bunny_pos = (-135, 260)
+        #max height for jumping bunnny
         self.bunny_jump = 10
         self.bunny_jump_pos = self.bunny_jump
+        #if bunny is already jumping
         self.isJumping = False
+        #height of rocks (top + h)
         self.h_rocks = None
+        #where the bunny should jump
         self.index_rock_jump = -1
-        self.start = True
+        #animation for start
+        self.animation_offset = 300
+        # for fading in rocks
         self.rock_animation_start = False
-        self.rock_animation_offset = 200
+        self.rock_animation_offset = self.animation_offset
+        # for dafing in numbers
         self.numbers_animation_start = False
-        self.numbers_animation_offset = 200
+        self.numbers_animation_offset = self.animation_offset
+        #animation for end
+        # for fading out rocks
+        self.rock_animation_end = False
+        self.rock_animation_pos = 0
+        # for fading out numbers
+        self.numbers_animation_end = False
+        self.numbers_animation_pos = 0
+        #index where is mouse
         self.rock_hover_index = -1
         self.rock_hover_height = 20
         self.rock_hover_pos = 0
+        #old index where is mouse, used to "back" animation
         self.rock_old_hover_index = -1
         self.rock_old_hover_height = self.rock_hover_height
         self.rock_old_hover_pos = self.rock_old_hover_height
+        #values for shaking
         self.shake_width = 10
         self.shake_pos = -self.shake_width
         self.shake_index = -1
         self.shake_count = 0
+        #if there is True, level will end
+        self.exit = False
+        #if this is True, fading out animation is working,
+        self.going_off = False
+        #done exit animation
+        self.rock_animation_end_done = False
+        self.numbers_animation_end_done = False
 
     def __repr__(self):
         return self.level_status
@@ -83,7 +110,7 @@ class Level:
     def create_ins(self, base_ins_num, rock_n):
             ins = []
             move_rock = 0
-            ins_pocet = base_ins_num
+            ins_pocet = base_ins_num + self.level_status
             sign = 1
             ins_number = 0
             while ins_number < ins_pocet:
@@ -164,11 +191,21 @@ class Level:
         return self.bunny_pos
 
     def rocks_coors(self, x, y, index):
+        ciste_y = y
+
         if self.rock_animation_start:
-            y = y + self.rock_animation_offset
-            self.rock_animation_offset -= 2
+            y += self.rock_animation_offset
+            if index == len(self.h_rocks) - 1:
+                self.rock_animation_offset -= 10
             if self.rock_animation_offset == 0:
                 self.rock_animation_start = False
+        elif self.rock_animation_end:
+            y += self.rock_animation_pos
+            if index == len(self.h_rocks) - 1:
+                self.rock_animation_pos += 10
+            if self.rock_animation_pos >= self.animation_offset:
+                self.rock_animation_end = False
+                self.rock_animation_end_done = True
         elif self.rock_hover_index != -1 and index == self.rock_hover_index:
             self.rock_hover_index_backup = self.rock_hover_index
             y = self.h_rocks[self.rock_hover_index] - self.rock_hover_pos
@@ -196,14 +233,29 @@ class Level:
                     self.shake_count = 0
                     self.shake_index = -1
 
+        if self.rock_animation_end_done:
+            return x, ciste_y + self.animation_offset
         return x, y
 
-    def numbers_coors(self, y):
+    def numbers_coors(self, y, is_last):
+        ciste_y = y
+
         if self.numbers_animation_start:
             y = y + self.numbers_animation_offset
-            self.numbers_animation_offset -= 2
+            if is_last:
+                self.numbers_animation_offset -= 10
             if self.numbers_animation_offset <= 0:
                 self.numbers_animation_start = False
+        elif self.numbers_animation_end:
+            y += self.numbers_animation_pos
+            if is_last:
+                self.numbers_animation_pos += 10
+            if self.numbers_animation_pos >= self.animation_offset:
+                self.numbers_animation_end = False
+                self.numbers_animation_end_done = True
+
+        if self.numbers_animation_end_done:
+            return ciste_y + self.animation_offset
         return y
 
     def start_anim(self):
@@ -212,3 +264,14 @@ class Level:
             self.numbers_animation_start = True
             self.isJumping = True
             self.start = False
+
+    def fade_away(self):
+        if not self.going_off:
+            self.rock_hover_index = -1
+            self.rock_old_hover_index = -1
+            self.shake_index = -1
+            self.rock_animation_end = True
+            self.numbers_animation_end = True
+            self.isJumping = True
+        else:
+            self.going_off = True
