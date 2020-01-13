@@ -6,12 +6,12 @@ TODO:
  - spravit win akciu
  - hodia sa tu levely
 """
-#imports
-import pygame as pg
+#import main libraries
 from pygame.locals import *
 import sys
 import random
 
+#import consts
 from main_obj import Level
 from consts import Consts_game
 
@@ -25,15 +25,10 @@ const['game'] = Consts_game()
 const['color'] = files.colors.Consts_colors()
 const['window'] = files.window.Consts_window()
 
-#set up window
-pg.init()
-screen = pg.display.set_mode((const['window'].WIDTH, const['window'].HEIGHT))
-pg.display.set_caption(const['window'].TITLE)
-
 def getRockIndex(x):
     return x // const['game'].ROCK_WIDTH
 
-def zajo_level(level_status, level_max):
+def zajo_level(pg, screen, level_status, level_max):
     #init the object
     level = Level(level_status, pg)
     #get height for rocks

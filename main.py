@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import sys
 import random
+from krokovanie import zajo_main
 
 pygame.init()
 
