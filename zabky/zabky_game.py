@@ -2,7 +2,7 @@
 from pygame.locals import *
 import sys
 
-from main_obj import Level
+from zabky.main_obj import Level
 
 #import from sibling folder
 sys.path.insert(0, "..")
@@ -25,9 +25,9 @@ def zabky_level(pg, screen, level_status):
         #set backgrund image
         screen.blit(images['farm'], (0,0))
         #set log end
-        screen.blit(images['log_end'], (const['window'].WIDTH//3-(170//2), 580))
+        screen.blit(images['log_end'], (const['window'].WIDTH//3-(150//2), 580))
         #set log
-        screen.blit(images['log'], (100,480))
+        screen.blit(images['log'], (const['window'].WIDTH//3-(150//2)-160, 420))
 
         #---------EVENTS
         for event in pg.event.get():

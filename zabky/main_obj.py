@@ -6,12 +6,14 @@ class Level:
         self.pg = pygame
 
     def load_images(self, window_width, window_height):
+        path = 'zabky/resources/'
         images = {
-            "farm": self.pg.image.load('resources/farm.png'),
-            "log_end": self.pg.image.load('resources/log_end.png'),
-            "log": self.pg.image.load('resources/log.png')
+            "farm": self.pg.image.load(path + 'farm.png'),
+            "log_end": self.pg.image.load(path + 'log_end.png'),
+            "log": self.pg.image.load(path + 'log.png')
         }
         images['farm'] = self.pg.transform.scale(images['farm'], (window_width, window_height))
-        images['log_end'] = self.pg.transform.scale(images['log_end'], (170,170))
+        images['log_end'] = self.pg.transform.scale(images['log_end'], (150, 150))
+        images['log'] = self.pg.transform.scale(images['log'], (320,160))
 
         return images

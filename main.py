@@ -2,7 +2,8 @@ import pygame
 from pygame.locals import *
 import sys
 import random
-from krokovanie import zajo_main
+from krokovanie.zajo_main import zajo_main_func
+from zabky.zabky_main import zabky_main_func
 
 pygame.init()
 
@@ -20,9 +21,15 @@ pygame.display.set_caption('ahoj svet')
 
 def game_intro():
     text_one = pygame.font.Font('freesansbold.ttf', 115)
-    surface_one = text_one.render('Ahojsvet', True, green)
-    text_obj = surface_one.get_rect()
-    text_obj.center = (400,300)
+
+    surface_one = text_one.render('prva_hra', True, green)
+    surface_two = text_one.render('druha_hra', True, red)
+
+    text_obj_one = surface_one.get_rect()
+    text_obj_one.center = (400, 150)
+
+    text_obj_two = surface_two.get_rect()
+    text_obj_two.center = (400, 450)
 
     while True:
         for event in pygame.event.get():
@@ -31,14 +38,17 @@ def game_intro():
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 coors = event.pos
-                if text_obj.collidepoint(coors):
-                    game_loop()
+                if text_obj_one.collidepoint(coors):
+                    zajo_main_func(pygame, screen)
+                elif text_obj_two.collidepoint(coors):
+                    zabky_main_func(pygame, screen)
 
         screen.fill(white)
-        screen.blit(surface_one, text_obj)
+        screen.blit(surface_one, text_obj_one)
+        screen.blit(surface_two, text_obj_two)
         pygame.display.update()
 
-def game_loop():
+#def game_loop():
     rect = pygame.Rect(0,0,100,100)
     catx = 0
     caty = 0

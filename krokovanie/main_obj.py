@@ -70,11 +70,12 @@ class Level:
         self.h_rocks = rocks_height
 
     def load_images(self, width):
+        path = 'krokovanie/resources/'
         images = {
-            "grass": self.pg.image.load('resources/grass.png'),
-            "bunny": self.pg.image.load('resources/bunny.png'),
-            "rock": self.pg.image.load('resources/rock.png'),
-            "arrow_to": self.pg.image.load('resources/arrow.png')
+            "grass": self.pg.image.load(path + 'grass.png'),
+            "bunny": self.pg.image.load(path + 'bunny.png'),
+            "rock": self.pg.image.load(path + 'rock.png'),
+            "arrow_to": self.pg.image.load(path + 'arrow.png')
         }
         images["arrow_back"] = self.pg.transform.flip(images["arrow_to"], True, False)
         #edit images

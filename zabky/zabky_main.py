@@ -1,9 +1,5 @@
-
-from zabky_game import *
+from zabky.zabky_game import zabky_level
 import pygame as pg
 
-pg.init()
-screen = pg.display.set_mode((const['window'].WIDTH, const['window'].HEIGHT))
-pg.display.set_caption(const['window'].TITLE)
-
-action = zabky_level(pg, screen, 1)
+def zabky_main_func(pg, screen):
+    action = zabky_level(pg, screen, 1)

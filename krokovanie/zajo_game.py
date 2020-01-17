@@ -4,7 +4,7 @@ a ulohou je zisit kde skonci.
 V tejto hre budu levely, v kazdom leveli sa vytvori objekt.
 TODO:
  - spravit win akciu
- - hodia sa tu levely
+ - ako urcovat levelov dat hviezdicky
 """
 #import main libraries
 from pygame.locals import *
@@ -12,8 +12,8 @@ import sys
 import random
 
 #import consts
-from main_obj import Level
-from consts import Consts_game
+from krokovanie.main_obj import Level
+from krokovanie.consts import Consts_game
 
 #import from sibling folder
 sys.path.insert(0, "..")
