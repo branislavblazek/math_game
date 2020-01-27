@@ -46,11 +46,6 @@ def zajo_level(pg, screen, level_status, level_max):
     mouse_coor = [0, 0]
     mouse_clicked = False
     count_jump = -1
-    #level info text
-    level_font_obj = pg.font.Font('freesansbold.ttf', 32)
-    level_font_surface = level_font_obj.render(str(level_status) + " / " + str(level_max), True, const['color'].RED)
-    level_font_rect = level_font_surface.get_rect()
-    level_font_rect.center = (60, 32)
 
     #main loop
     level.start = True
@@ -60,7 +55,12 @@ def zajo_level(pg, screen, level_status, level_max):
             for y in range(int(const['window'].HEIGHT/images["grass"].get_height()+1)):
                 screen.blit(images["grass"], (x*images["grass"].get_width(), y*images["grass"].get_height()))
         # place level info
-        screen.blit(level_font_surface, level_font_rect)
+        #screen.blit(level_font_surface, level_font_rect)
+        for star in range(level_max):
+            if star < level_status:
+                screen.blit(images['star_full'], (star*60+20,25))
+            else:
+                screen.blit(images['star_null'], (star*60+20,25))
 
         # place start rock
         screen.blit(images["rock"], level.rocks_coors(0,460, -2))
@@ -125,19 +125,26 @@ def zajo_level(pg, screen, level_status, level_max):
             #this will prevent to run this condition several times
             mouse_clicked = False
             if rockx != None and rocky != None:
+
                 index = getRockIndex(rockx)
+
                 if index == move_rock:
-                    level.isJumping = True
-                    level.index_rock_jump = 0
-                    count_jump = move_rock - 1
+                    level.correct = True
                 else:
-                    level.shake_index = index - 1
-                    return 'max'
+                    level.correct = False
+
+                level.isJumping = True
+                level.index_rock_jump = 0
+                count_jump = index - 1
+                #print('index: ' + str(index) + ' moverock: ' +  str(move_rock))
+                level.going_to_jump = index
 
         #end game
-        if level.index_rock_jump == move_rock:
-            #level.fade_away()
+        print(level.index_rock_jump, level.going_to_jump)
+        if level.index_rock_jump == level.going_to_jump and level.correct:
             return 'status'
+        elif level.index_rock_jump+3 == level.going_to_jump and level.correct == False:
+            return 'max'
 
         #update display
         pg.display.flip()

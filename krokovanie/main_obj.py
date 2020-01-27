@@ -55,6 +55,8 @@ class Level:
         #done exit animation
         self.rock_animation_end_done = False
         self.numbers_animation_end_done = False
+        self.correct = None
+        self.going_to_jump = -1
 
     def __repr__(self):
         return self.level_status
@@ -75,7 +77,9 @@ class Level:
             "grass": self.pg.image.load(path + 'grass.png'),
             "bunny": self.pg.image.load(path + 'bunny.png'),
             "rock": self.pg.image.load(path + 'rock.png'),
-            "arrow_to": self.pg.image.load(path + 'arrow.png')
+            "arrow_to": self.pg.image.load(path + 'arrow.png'),
+            "star_null": self.pg.image.load(path + 'star_0.png'),
+            "star_full": self.pg.image.load(path + 'star_1.png')
         }
         images["arrow_back"] = self.pg.transform.flip(images["arrow_to"], True, False)
         #edit images

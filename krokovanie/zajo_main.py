@@ -5,7 +5,7 @@ def zajo_main_func(pg, screen):
     level_max = 4
     level_status = 1
 
-    while level_status <= level_max:
+    while level_status < level_max:
         action = zajo_level(pg, screen, level_status, level_max)
         if action == 'max':
             level_max += 1
