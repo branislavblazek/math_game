@@ -2,9 +2,6 @@
 V tejto hre je Zajo ktory krokuje podla pravidiel
 a ulohou je zisit kde skonci.
 V tejto hre budu levely, v kazdom leveli sa vytvori objekt.
-TODO:
- - spravit win akciu
- - ako urcovat levelov dat hviezdicky
 """
 #import main libraries
 from pygame.locals import *
@@ -31,6 +28,7 @@ def getRockIndex(x):
 def zajo_level(pg, screen, level_status, level_max):
     #init the object
     level = Level(level_status, pg)
+    clock = pg.time.Clock()
     #get height for rocks
     level.random_rock_height(const['game'].ROCK_NUM, const['game'].ROCK_TOP_OFFSET)
     #get images and get height of rocks
@@ -76,8 +74,10 @@ def zajo_level(pg, screen, level_status, level_max):
             level.isJumping = True
             level.index_rock_jump = move_rock - count_jump
             count_jump -= 1
+            level.now_on_index += 1
         elif count_jump == 0 and level.isJumping == False:
             level.index_rock_jump = move_rock - count_jump
+            level.now_on_index += 1
             count_jump -= 1
 
         #place numbers under rocks
@@ -137,14 +137,14 @@ def zajo_level(pg, screen, level_status, level_max):
                 level.index_rock_jump = 0
                 count_jump = index - 1
                 #print('index: ' + str(index) + ' moverock: ' +  str(move_rock))
-                level.going_to_jump = index
+                level.going_to_jump = count_jump
 
         #end game
-        print(level.index_rock_jump, level.going_to_jump)
-        if level.index_rock_jump == level.going_to_jump and level.correct:
+        if level.now_on_index == level.going_to_jump and level.correct:
             return 'status'
-        elif level.index_rock_jump+3 == level.going_to_jump and level.correct == False:
+        elif level.now_on_index == level.going_to_jump and level.correct == False:
             return 'max'
 
         #update display
-        pg.display.flip()
+        pg.display.update()
+        clock.tick(60)

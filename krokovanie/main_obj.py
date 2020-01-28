@@ -10,12 +10,16 @@ class Level:
         #number of first number under first rock
         self.initial_number = random.randint(5,10)
         #start position of bunny
-        self.bunny_pos = (-135, 260)
+        self.bunny_pos = (-130, 260)
         #max height for jumping bunnny
         self.bunny_jump = 10
         self.bunny_jump_pos = self.bunny_jump
         #if bunny is already jumping
         self.isJumping = False
+        #on which index is bunny now
+        self.now_on_index = -1
+        #where is going to jump
+        self.going_to_jump = -1
         #height of rocks (top + h)
         self.h_rocks = None
         #where the bunny should jump
@@ -56,7 +60,6 @@ class Level:
         self.rock_animation_end_done = False
         self.numbers_animation_end_done = False
         self.correct = None
-        self.going_to_jump = -1
 
     def __repr__(self):
         return self.level_status
