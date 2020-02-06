@@ -283,3 +283,49 @@ class Level:
             self.isJumping = True
         else:
             self.going_off = True
+
+class Win:
+    def __init__(self, pg, screen):
+        self.pg = pg
+        self.screen = screen
+        self.is_animating = False
+        self.font_obj = self.pg.font.Font('freesansbold.ttf', 64)
+        self.text_surface = self.font_obj.render('You win!', True, (0,0,0))
+        self.text_rect = self.text_surface.get_rect()
+        self.w, self.h = self.pg.display.get_surface().get_size()
+        self.text_rect.center = (self.w//2, -20)
+        self.posun = 0
+
+    def animate(self):
+        self.is_animating = True
+        nove_miesto = self.text_rect.copy()
+        self.posun += 0.5
+        nove_miesto.y += self.posun
+        self.text_rect = nove_miesto
+        self.screen.blit(self.text_surface, self.text_rect)
+
+        if self.text_rect.y >= self.h:
+            self.is_animating = False
+
+class Lose:
+    def __init__(self, pg, screen):
+        self.pg = pg
+        self.screen = screen
+        self.is_animating = False
+        self.font_obj = self.pg.font.Font('freesansbold.ttf', 64)
+        self.text_surface = self.font_obj.render('You lose!', True, (0,0,0))
+        self.text_rect = self.text_surface.get_rect()
+        self.w, self.h = self.pg.display.get_surface().get_size()
+        self.text_rect.center = (self.w//2, -20)
+        self.posun = 0
+
+    def animate(self):
+        self.is_animating = True
+        nove_miesto = self.text_rect.copy()
+        self.posun += 0.5
+        nove_miesto.y += self.posun
+        self.text_rect = nove_miesto
+        self.screen.blit(self.text_surface, self.text_rect)
+
+        if self.text_rect.y >= self.h:
+            self.is_animating = False

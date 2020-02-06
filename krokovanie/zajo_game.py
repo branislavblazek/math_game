@@ -9,7 +9,7 @@ import sys
 import random
 
 #import consts
-from krokovanie.main_obj import Level
+from krokovanie.main_obj import Level, Win, Lose
 from krokovanie.consts import Consts_game
 
 #import from sibling folder
@@ -29,6 +29,8 @@ def zajo_level(pg, screen, level_status, level_max):
     #init the object
     level = Level(level_status, pg)
     clock = pg.time.Clock()
+    win_animacia = Win(pg, screen)
+    lose_animacia = Lose(pg, screen)
     #get height for rocks
     level.random_rock_height(const['game'].ROCK_NUM, const['game'].ROCK_TOP_OFFSET)
     #get images and get height of rocks
@@ -141,9 +143,13 @@ def zajo_level(pg, screen, level_status, level_max):
 
         #end game
         if level.now_on_index == level.going_to_jump and level.correct:
-            return 'status'
+            win_animacia.animate()
+            if not win_animacia.is_animating:
+                return 'status'
         elif level.now_on_index == level.going_to_jump and level.correct == False:
-            return 'max'
+            lose_animacia.animate()
+            if not lose_animacia.is_animating:
+                return 'max'
 
         #update display
         pg.display.update()

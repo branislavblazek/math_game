@@ -2,7 +2,7 @@
 from pygame.locals import *
 import sys
 
-from zabky.main_obj import Level, Zabka, Win
+from zabky.main_obj import Level, Zabka, Win, Lose
 
 #import from sibling folder
 sys.path.insert(0, "..")
@@ -31,6 +31,7 @@ def zabky_level(pg, screen, level_status, level_max):
     exit_code = -1
     zabiek_na_dreve = 0
     win_animacia = Win(pg, screen)
+    lose_animacia = Lose(pg, screen)
     while True:
         #---------PLACE IMAGES
         #set backgrund image
@@ -83,9 +84,14 @@ def zabky_level(pg, screen, level_status, level_max):
                     can_return = False
 
             if can_return:
-                win_animacia.animate()
-                if not win_animacia.is_animating:
-                    return exit_code
+                if exit_code == 1:
+                    win_animacia.animate()
+                    if not win_animacia.is_animating:
+                        return exit_code
+                else:
+                    lose_animacia.animate()
+                    if not lose_animacia.is_animating:
+                        return exit_code
 
         #---------EVENTS
         for event in pg.event.get():
