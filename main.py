@@ -6,6 +6,7 @@ from krokovanie.zajo_main import zajo_main_func
 from zabky.zabky_main import zabky_main_func
 from files.window import Consts_window
 from files.colors import Consts_colors
+from intro_obj import Mascot_animation
 
 pygame.init()
 
@@ -18,16 +19,27 @@ screen = pygame.display.set_mode((const['window'].WIDTH, const['window'].HEIGHT)
 pygame.display.set_caption('ahoj svet')
 
 def game_intro():
+    mouse_coors = [0,0]
     text_one = pygame.font.Font('freesansbold.ttf', 115)
 
     surface_one = text_one.render('prva_hra', True, const['colors'].BLUE)
     surface_two = text_one.render('druha_hra', True, const['colors'].GREEN)
 
-    text_obj_one = surface_one.get_rect()
-    text_obj_one.center = (400, 150)
+    game1 = pygame.image.load('home.png')
+    game1_maskot = pygame.image.load('krokovanie/resources/bunny.png')
+    game1_maskot_obj = Mascot_animation((240,414))
+    game1_rect = game1.get_rect()
+    game1_rect.topleft = (30,400)
 
-    text_obj_two = surface_two.get_rect()
-    text_obj_two.center = (400, 450)
+    game2 = pygame.image.load('home.png')
+    game2_maskot = pygame.image.load('zabky/resources/frog.png')
+    game2_maskot = pygame.transform.scale(game2_maskot, (135, 173))
+    game2_maskot_obj = Mascot_animation((630, 200))
+    game2_maskot_obj.max_off = 140
+    game2_rect = game2.get_rect()
+    game2_rect.topleft = (420, 140)
+
+    game3 = pygame.image.load('home2.png')
 
     while True:
         #------MAIN LOOP
@@ -36,19 +48,41 @@ def game_intro():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            #-----MOUTION EVENT
+            elif event.type == pygame.MOUSEMOTION:
+                mouse_coors = event.pos
+                if game1_rect.collidepoint(mouse_coors):
+                    game1_maskot_obj.is_showing = True
+                    game1_maskot_obj.is_hiding = False
+                    game1_maskot_obj.is_hided = False
+                else:
+                    game1_maskot_obj.is_showing = False
+                    game1_maskot_obj.is_showed = False
+                    game1_maskot_obj.is_hiding = True
+                if game2_rect.collidepoint(mouse_coors):
+                    game2_maskot_obj.is_showing = True
+                    game2_maskot_obj.is_hiding = False
+                    game2_maskot_obj.is_hided = False
+                else:
+                    game2_maskot_obj.is_showing = False
+                    game2_maskot_obj.is_showed = False
+                    game2_maskot_obj.is_hiding = True
             #-----CLICK EVENT
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                coors = event.pos
-                if text_obj_one.collidepoint(coors):
+                mouse_coors = event.pos
+                if game1_rect.collidepoint(mouse_coors):
                     #-----START ZAJO
                     zajo_main_func(pygame, screen)
-                elif text_obj_two.collidepoint(coors):
+                elif game2_rect.collidepoint(mouse_coors):
                     #-----START ZABKY
                     zabky_main_func(pygame, screen)
 
-        screen.fill(const['colors'].WHITE)
-        screen.blit(surface_one, text_obj_one)
-        screen.blit(surface_two, text_obj_two)
+        screen.fill((242, 225, 155))
+        screen.blit(game3, (-70, 00))
+        screen.blit(game1_maskot, game1_maskot_obj.position())
+        screen.blit(game1, game1_rect)
+        screen.blit(game2_maskot, game2_maskot_obj.position())
+        screen.blit(game2, game2_rect)
         pygame.display.update()
 
 game_intro()
