@@ -11,3 +11,5 @@ def zabky_main_func(pg, screen):
             level_status += 1
         elif action == 0:
             level_max += 1
+        elif action == 2:
+            break

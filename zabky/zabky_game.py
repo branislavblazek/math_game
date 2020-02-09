@@ -27,11 +27,25 @@ def zabky_level(pg, screen, level_status, level_max):
     frogs = []
     for i in range(len(numbers)):
         frogs.append(Zabka(numbers[i], pg, 80*i))
-    #------------MAIN LOOP
     exit_code = -1
     zabiek_na_dreve = 0
     win_animacia = Win(pg, screen)
     lose_animacia = Lose(pg, screen)
+    #------HOME BUTTON
+    images['back_rect'].topleft = (0,const['window'].HEIGHT-images['back'].get_height())
+    #-------HELPING
+    level.start_pos = [const['window'].WIDTH-images['q_mark'].get_width(), 0]
+    level.act_pos = level.start_pos.copy()
+
+    surface_help = pg.Surface((300,images['q_mark'].get_height()))
+    surface_help.set_alpha(128)
+    surface_help.fill((0, 149, 255))
+    surface_help_rect = surface_help.get_rect()
+
+    text_help_font = pg.font.Font('freesansbold.ttf', 32)
+    text_help_surface = text_help_font.render('11 = a + b', True, const['color'].BLACK)
+    text_help_rect = text_help_surface.get_rect()
+    #------------MAIN LOOP
     while True:
         #---------PLACE IMAGES
         #set backgrund image
@@ -42,8 +56,20 @@ def zabky_level(pg, screen, level_status, level_max):
         screen.blit(images['log'], (const['window'].WIDTH//3-300, 390))
         #set box
         screen.blit(images['box'], (610, 400))
-        #set weight
-        #screen.blit(images['weight'], (65,300))
+        #set home
+        screen.blit(images['back'], images['back_rect'])
+        #HELPING
+            #set ask
+        images['q_mark_rect'].topleft = level.act_pos
+        screen.blit(images['q_mark'], images['q_mark_rect'])
+            #rect
+        surface_help_rect[0] = level.act_pos[0]
+        surface_help_rect[1] = level.act_pos[1]
+        screen.blit(surface_help, surface_help_rect)
+            #text
+        text_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width(), 20)
+        screen.blit(text_help_surface, text_help_rect)
+        #weight
         images['weight'].draw(screen)
         #info level
         for star in range(level_max):
@@ -64,6 +90,16 @@ def zabky_level(pg, screen, level_status, level_max):
                     frog.max = level.left_side_n
             frog.kresli_info.draw(screen)
             spolu_na_hojdacke_vaha += frog.na_hojdacke
+
+        if surface_help_rect.collidepoint(mouse_coor):
+            if level.act_pos[0] >= level.start_pos[0] - level.max_off:
+                level.act_pos[0] -= 6
+        else:
+            if level.act_pos[0] < level.start_pos[0]:
+                level.act_pos[0] += 6
+
+        if images['back_rect'].collidepoint(mouse_coor) and mouse_clicked:
+            return 2
 
         if zabiek_na_dreve >= 2:
             if spolu_na_hojdacke_vaha == level.left_side:

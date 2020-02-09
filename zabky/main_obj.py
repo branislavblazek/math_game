@@ -9,8 +9,13 @@ class Level:
         self.left_side = self.get_left_side()
         self.left_side_n = self.left_side
         self.left_side = sum(self.left_side)
+        #for help:
+        self.start_pos = [0,0]
+        self.max_off = 200
+        self.act_pos = self.start_pos
 
     def load_images(self, window_width, window_height):
+        anim = animation_images.Get_images(self.pg)
         path = 'zabky/resources/'
         images = {
             "farm": self.pg.image.load(path + 'farm.png'),
@@ -19,13 +24,18 @@ class Level:
             "box": self.pg.image.load(path + 'box.png'),
             "weight": self.pg.image.load(path + 'weight.png'),
             "star_full": self.pg.image.load(path + 'star_1.png'),
-            "star_null": self.pg.image.load(path + 'star_0.png')
+            "star_null": self.pg.image.load(path + 'star_0.png'),
+            "back": anim.back,
+            "q_mark": anim.q_mark
         }
         images['farm'] = self.pg.transform.scale(images['farm'], (window_width, window_height))
         images['log_end'] = self.pg.transform.scale(images['log_end'], (200, 200))
         images['log'] = self.pg.transform.scale(images['log'], (560,200))
         images['box'] = self.pg.transform.scale(images['box'], (380, 380))
         images['weight'] = self.pg.transform.scale(images['weight'], (180, 200))
+        images['back_rect'] = images['back'].get_rect()
+        images['q_mark_rect'] = images['q_mark'].get_rect()
+
 
         #adding text on weight img
         sprite = self.pg.sprite.Sprite()

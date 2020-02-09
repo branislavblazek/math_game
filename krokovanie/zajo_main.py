@@ -11,3 +11,5 @@ def zajo_main_func(pg, screen):
             level_max += 1
         elif action == 'status':
             level_status += 1
+        elif action == 2:
+            break

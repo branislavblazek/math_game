@@ -46,7 +46,20 @@ def zajo_level(pg, screen, level_status, level_max):
     mouse_coor = [0, 0]
     mouse_clicked = False
     count_jump = -1
+    #home button
+    images['back_rect'].topleft = (0,const['window'].HEIGHT-images['back'].get_height())
+    #-------HELPING
+    level.start_pos = [const['window'].WIDTH-images['q_mark'].get_width(), 0]
+    level.act_pos = level.start_pos.copy()
 
+    surface_help = pg.Surface((300,images['q_mark'].get_height()))
+    surface_help.set_alpha(128)
+    surface_help.fill((0, 149, 255))
+    surface_help_rect = surface_help.get_rect()
+
+    text_help_font = pg.font.Font('freesansbold.ttf', 32)
+    text_help_surface = text_help_font.render('11 = a + b', True, const['color'].BLACK)
+    text_help_rect = text_help_surface.get_rect()
     #main loop
     level.start = True
     while True:
@@ -61,6 +74,20 @@ def zajo_level(pg, screen, level_status, level_max):
                 screen.blit(images['star_full'], (star*60+20,25))
             else:
                 screen.blit(images['star_null'], (star*60+20,25))
+
+        screen.blit(images['back'], images['back_rect'])
+        
+        #HELPING
+            #set ask
+        images['q_mark_rect'].topleft = level.act_pos
+        screen.blit(images['q_mark'], images['q_mark_rect'])
+            #rect
+        surface_help_rect[0] = level.act_pos[0]
+        surface_help_rect[1] = level.act_pos[1]
+        screen.blit(surface_help, surface_help_rect)
+            #text
+        text_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width(), 20)
+        screen.blit(text_help_surface, text_help_rect)
 
         # place start rock
         screen.blit(images["rock"], level.rocks_coors(0,460, -2))
@@ -109,6 +136,9 @@ def zajo_level(pg, screen, level_status, level_max):
             elif event.type == MOUSEBUTTONDOWN:
                 mouse_coor = event.pos
                 mouse_clicked = True
+
+        if images['back_rect'].collidepoint(mouse_coor) and mouse_clicked:
+            return 2
 
         rockx, rocky = level.getRockAtPixel(*mouse_coor, const['game'].ROCK_WIDTH, const['game'].rock_height)
         if rockx != None and rocky != None and not level.isJumping:
