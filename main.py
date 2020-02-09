@@ -41,6 +41,11 @@ def game_intro():
 
     game3 = pygame.image.load('resources/home2.png')
 
+    autor_textObj = pygame.font.SysFont('verdana', 16)
+    autor_textSurfaceObj = autor_textObj.render('Verbová Nikola, Blažek Branislav', True, const['colors'].BLACK)
+    autor_textRectObj = autor_textSurfaceObj.get_rect()
+    autor_textRectObj.center = (const['window'].WIDTH-140,const['window'].HEIGHT-16)
+
     while True:
         #------MAIN LOOP
         for event in pygame.event.get():
@@ -83,6 +88,7 @@ def game_intro():
         screen.blit(game1, game1_rect)
         screen.blit(game2_maskot, game2_maskot_obj.position())
         screen.blit(game2, game2_rect)
+        screen.blit(autor_textSurfaceObj, autor_textRectObj)
         pygame.display.update()
 
 game_intro()

@@ -92,6 +92,12 @@ def zabky_level(pg, screen, level_status, level_max):
                     zabiek_na_dreve += 1
                     frog.kolkata = zabiek_na_dreve
                     frog.max = level.left_side_n
+            elif frog.as_rect().collidepoint(mouse_coor):
+                frog.active_grp = frog.grp2
+                frog.active = 2
+            else:
+                frog.active_grp = frog.grp1
+                frog.active = 1
             frog.kresli_info.draw(screen)
             spolu_na_hojdacke_vaha += frog.na_hojdacke
 

@@ -94,14 +94,21 @@ class Zabka:
         path = 'zabky/resources/'
         self.img = self.pg.image.load(path + 'frog.png')
         self.img = self.pg.transform.scale(self.img, (120, 150))
+        self.img2 = self.pg.image.load(path + 'frog2.png')
+        self.img2 = self.pg.transform.scale(self.img2, (120, 150))
         self.posun = posun
         #ako kolkata zabka je na hojdacke, nieco ako index
         self.kolkata = -1
         self.max = -1
+        self.grp1 = self.make_group(self.img)
+        self.grp2 = self.make_group(self.img2)
+        self.active_grp = self.grp2
+        self.active = 1
 
+    def make_group(self, which_img):
         sprite = self.pg.sprite.Sprite()
-        sprite.image = self.img
-        sprite.rect = self.img.get_rect()
+        sprite.image = which_img
+        sprite.rect = which_img.get_rect()
         sprite.rect.x = self.x
         sprite.rect.y = self.y
         font = self.pg.font.SysFont('Sans', 40)
@@ -114,9 +121,10 @@ class Zabka:
 
         xxx = self.pg.Rect(40+plus,80,50,50)
         sprite.image.blit(text, xxx)
+
         group = self.pg.sprite.Group()
         group.add(sprite)
-        self.img = group
+        return group
 
     @property
     def kresli_info(self):
@@ -138,12 +146,16 @@ class Zabka:
                 elif self.jump_direction == -1:
                     self.na_hojdacke = self.vaha
                     self.jump_direction = 1
-        self.img.sprites()[0].rect.left = self.x
-        self.img.sprites()[0].rect.top = self.y
-        return self.img
+
+        self.grp1.sprites()[0].rect.left = self.x
+        self.grp1.sprites()[0].rect.top = self.y
+        self.grp2.sprites()[0].rect.left = self.x
+        self.grp2.sprites()[0].rect.top = self.y
+
+        return self.grp1 if self.active == 1 else self.grp2
 
     def as_rect(self):
-        copy_img = self.img.sprites()[0].rect
+        copy_img = self.grp1.sprites()[0].rect
         return copy_img
 
 class Win:
