@@ -6,7 +6,7 @@ from krokovanie.zajo_main import zajo_main_func
 from zabky.zabky_main import zabky_main_func
 from files.window import Consts_window
 from files.colors import Consts_colors
-from intro_obj import Mascot_animation
+import files.intro_obj
 
 pygame.init()
 
@@ -25,21 +25,21 @@ def game_intro():
     surface_one = text_one.render('prva_hra', True, const['colors'].BLUE)
     surface_two = text_one.render('druha_hra', True, const['colors'].GREEN)
 
-    game1 = pygame.image.load('home.png')
+    game1 = pygame.image.load('resources/home.png')
     game1_maskot = pygame.image.load('krokovanie/resources/bunny.png')
-    game1_maskot_obj = Mascot_animation((240,414))
+    game1_maskot_obj = files.intro_obj.Mascot_animation((240,414))
     game1_rect = game1.get_rect()
     game1_rect.topleft = (30,400)
 
-    game2 = pygame.image.load('home.png')
+    game2 = pygame.image.load('resources/home.png')
     game2_maskot = pygame.image.load('zabky/resources/frog.png')
     game2_maskot = pygame.transform.scale(game2_maskot, (135, 173))
-    game2_maskot_obj = Mascot_animation((630, 200))
+    game2_maskot_obj = files.intro_obj.Mascot_animation((630, 200))
     game2_maskot_obj.max_off = 140
     game2_rect = game2.get_rect()
     game2_rect.topleft = (420, 140)
 
-    game3 = pygame.image.load('home2.png')
+    game3 = pygame.image.load('resources/home2.png')
 
     while True:
         #------MAIN LOOP

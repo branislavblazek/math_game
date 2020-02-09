@@ -45,11 +45,15 @@ def zabky_level(pg, screen, level_status, level_max):
     text_help_font = pg.font.Font('freesansbold.ttf', 32)
     text_help_surface = text_help_font.render('11 = a + b', True, const['color'].BLACK)
     text_help_rect = text_help_surface.get_rect()
+    #--------TEXT
+    intro_text, intro_rect = level.generate_text(const['window'].WIDTH, const['color'].BLACK)
     #------------MAIN LOOP
     while True:
         #---------PLACE IMAGES
         #set backgrund image
         screen.blit(images['farm'], (0,0))
+        #set text
+        screen.blit(intro_text, intro_rect)
         #set log end
         screen.blit(images['log_end'], (const['window'].WIDTH//3-120, 500))
         #set log

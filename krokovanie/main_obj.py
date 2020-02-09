@@ -1,5 +1,5 @@
 import random
-import animation_images
+import files
 
 class Level:
     def __init__(self, status, pygame):
@@ -80,6 +80,7 @@ class Level:
         self.h_rocks = rocks_height
 
     def load_images(self, width):
+        anim = files.animation_images.Get_images(self.pg)
         path = 'krokovanie/resources/'
         images = {
             "grass": self.pg.image.load(path + 'grass.png'),
@@ -88,26 +89,29 @@ class Level:
             "arrow_to": self.pg.image.load(path + 'arrow.png'),
             "star_null": self.pg.image.load(path + 'star_0.png'),
             "star_full": self.pg.image.load(path + 'star_1.png'),
-            "back": animation_images.Get_images(self.pg).back
+            "back": anim.back,
+            "q_mark": anim.q_mark
         }
+        images['arrow_to'] = self.pg.transform.scale(images['arrow_to'], (90, 90))
         images["arrow_back"] = self.pg.transform.flip(images["arrow_to"], True, False)
         #edit images
         pomer = width / (images["rock"].get_width() / 100)
         new_height = int(images["rock"].get_height() / 100 * pomer)
         images["rock"] = self.pg.transform.scale(images["rock"], (width,new_height))
         images['back_rect'] = images['back'].get_rect()
+        images['q_mark_rect'] = images['q_mark'].get_rect()
 
         return images, new_height
 
     def generate_text(self, width, color):
-        intro_textObj = self.pg.font.SysFont('bradleyhanditc', 46)
-        intro_textSurfaceObj = intro_textObj.render('Klikni na kamen kde doskace Zajko podla pravidiel.', True, color)
+        intro_textObj = self.pg.font.SysFont('impact', 46)
+        intro_textSurfaceObj = intro_textObj.render('Na ktorý kameň doskáče Zajko?', True, color)
         intro_textRectObj = intro_textSurfaceObj.get_rect()
-        intro_textRectObj.center = (width//2,100)
+        intro_textRectObj.center = (width//2,120)
         return intro_textSurfaceObj, intro_textRectObj
 
     def generate_numbers(self, one_width, color, pocet):
-        num_textObj = self.pg.font.SysFont('Verdana', 52)
+        num_textObj = self.pg.font.SysFont('impact', 52)
         num_surface = []
         num_rect = []
         for i in range(pocet):
@@ -125,7 +129,7 @@ class Level:
     def create_ins(self, base_ins_num, rock_n):
             ins = []
             move_rock = 0
-            ins_pocet = base_ins_num + self.level_status
+            ins_pocet = base_ins_num
             sign = 1
             ins_number = 0
             while ins_number < ins_pocet:
@@ -295,7 +299,7 @@ class Win:
     def __init__(self, pg, screen):
         self.pg = pg
         self.screen = screen
-        self.win = animation_images.Get_images(self.pg).right
+        self.win = files.animation_images.Get_images(self.pg).right
         self.win_rect = self.win.get_rect()
         self.is_animating = False
         self.w, self.h = self.pg.display.get_surface().get_size()
@@ -319,7 +323,7 @@ class Lose:
     def __init__(self, pg, screen):
         self.pg = pg
         self.screen = screen
-        self.wrong = animation_images.Get_images(self.pg).left
+        self.wrong = files.animation_images.Get_images(self.pg).left
         self.wrong_rect = self.wrong.get_rect()
         self.is_animating = False
         self.w, self.h = self.pg.display.get_surface().get_size()

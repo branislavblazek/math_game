@@ -1,5 +1,5 @@
 import random
-import animation_images
+import files
 
 class Level:
     def __init__(self, status, pygame):
@@ -15,7 +15,7 @@ class Level:
         self.act_pos = self.start_pos
 
     def load_images(self, window_width, window_height):
-        anim = animation_images.Get_images(self.pg)
+        anim = files.animation_images.Get_images(self.pg)
         path = 'zabky/resources/'
         images = {
             "farm": self.pg.image.load(path + 'farm.png'),
@@ -68,8 +68,14 @@ class Level:
             cislo = 1
 
         random.shuffle(numbers)
-        print(numbers[:cislo])
         return numbers[:cislo]
+
+    def generate_text(self, width, color):
+        intro_textObj = self.pg.font.SysFont('impact', 46)
+        intro_textSurfaceObj = intro_textObj.render('Ktoré 2 žabky sú potrebné na vyrovnanie?', True, color)
+        intro_textRectObj = intro_textSurfaceObj.get_rect()
+        intro_textRectObj.center = (width//2,120)
+        return intro_textSurfaceObj, intro_textRectObj
 
 class Zabka:
     def __init__(self, vaha, pg, posun=0):
@@ -144,7 +150,7 @@ class Win:
     def __init__(self, pg, screen):
         self.pg = pg
         self.screen = screen
-        self.win = animation_images.Get_images(self.pg).right
+        self.win = files.animation_images.Get_images(self.pg).right
         self.win_rect = self.win.get_rect()
         self.is_animating = False
         self.w, self.h = self.pg.display.get_surface().get_size()
@@ -168,7 +174,7 @@ class Lose:
     def __init__(self, pg, screen):
         self.pg = pg
         self.screen = screen
-        self.wrong = animation_images.Get_images(self.pg).left
+        self.wrong = files.animation_images.Get_images(self.pg).left
         self.wrong_rect = self.wrong.get_rect()
         self.is_animating = False
         self.w, self.h = self.pg.display.get_surface().get_size()

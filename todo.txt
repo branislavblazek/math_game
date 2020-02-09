@@ -1,9 +1,5 @@
-po sklovnekst
 nazvy celej hry + developeri
 nazvy jednotlivych hier na hover
 !zvyraznit zabku na hover
 lepsi system na zabky = nahodne cislo
 lepsi system na zajkov = obcasne blbne
-!otaznik v hre
-!neprehlae spky u zaja - vacsie alebo od seba
-!text v hry na Impacj

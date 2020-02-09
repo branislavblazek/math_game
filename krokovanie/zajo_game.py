@@ -76,7 +76,7 @@ def zajo_level(pg, screen, level_status, level_max):
                 screen.blit(images['star_null'], (star*60+20,25))
 
         screen.blit(images['back'], images['back_rect'])
-        
+
         #HELPING
             #set ask
         images['q_mark_rect'].topleft = level.act_pos
@@ -121,9 +121,9 @@ def zajo_level(pg, screen, level_status, level_max):
         left_offset = (const['window'].WIDTH - images["arrow_to"].get_rect().size[0] * const['game'].ins_num) // 2
         for i in range(len(ins)):
             if ins[i] == 1:
-                screen.blit(images["arrow_to"], (i*50 + left_offset, 200))
+                screen.blit(images["arrow_to"], (i*92 + left_offset, 200))
             elif ins[i] == 0:
-                screen.blit(images["arrow_back"], (i*50 + left_offset, 200))
+                screen.blit(images["arrow_back"], (i*92 + left_offset, 200))
 
         # place bunny
         screen.blit(images["bunny"], level.bunny_coors())
@@ -136,6 +136,13 @@ def zajo_level(pg, screen, level_status, level_max):
             elif event.type == MOUSEBUTTONDOWN:
                 mouse_coor = event.pos
                 mouse_clicked = True
+
+        if surface_help_rect.collidepoint(mouse_coor):
+            if level.act_pos[0] >= level.start_pos[0] - level.max_off:
+                level.act_pos[0] -= 6
+        else:
+            if level.act_pos[0] < level.start_pos[0]:
+                level.act_pos[0] += 6
 
         if images['back_rect'].collidepoint(mouse_coor) and mouse_clicked:
             return 2
