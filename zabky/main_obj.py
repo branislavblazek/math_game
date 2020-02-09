@@ -1,4 +1,5 @@
 import random
+import animation_images
 
 class Level:
     def __init__(self, status, pygame):
@@ -133,44 +134,46 @@ class Win:
     def __init__(self, pg, screen):
         self.pg = pg
         self.screen = screen
+        self.win = animation_images.Get_images(self.pg).right
+        self.win_rect = self.win.get_rect()
         self.is_animating = False
-        self.font_obj = self.pg.font.Font('freesansbold.ttf', 64)
-        self.text_surface = self.font_obj.render('You win!', True, (0,0,0))
-        self.text_rect = self.text_surface.get_rect()
         self.w, self.h = self.pg.display.get_surface().get_size()
-        self.text_rect.center = (self.w//2, -20)
-        self.posun = 0
+        self.size = 0
 
     def animate(self):
         self.is_animating = True
-        nove_miesto = self.text_rect.copy()
-        self.posun += 0.5
-        nove_miesto.y += self.posun
-        self.text_rect = nove_miesto
-        self.screen.blit(self.text_surface, self.text_rect)
 
-        if self.text_rect.y >= self.h:
+        one_per = self.win.get_size()[0]//100
+        new_size = one_per * self.size
+        self.size += 2
+        transformed = self.pg.transform.scale(self.win, (new_size, new_size))
+        self.win_rect = transformed.get_rect()
+        self.win_rect.center = (self.w//2, self.h//2)
+        if self.size >= 100:
             self.is_animating = False
+
+        self.screen.blit(transformed, self.win_rect)
 
 class Lose:
     def __init__(self, pg, screen):
         self.pg = pg
         self.screen = screen
+        self.wrong = animation_images.Get_images(self.pg).left
+        self.wrong_rect = self.wrong.get_rect()
         self.is_animating = False
-        self.font_obj = self.pg.font.Font('freesansbold.ttf', 64)
-        self.text_surface = self.font_obj.render('You lose!', True, (0,0,0))
-        self.text_rect = self.text_surface.get_rect()
         self.w, self.h = self.pg.display.get_surface().get_size()
-        self.text_rect.center = (self.w//2, -20)
-        self.posun = 0
+        self.size = 0
 
     def animate(self):
         self.is_animating = True
-        nove_miesto = self.text_rect.copy()
-        self.posun += 0.5
-        nove_miesto.y += self.posun
-        self.text_rect = nove_miesto
-        self.screen.blit(self.text_surface, self.text_rect)
 
-        if self.text_rect.y >= self.h:
+        one_per = self.wrong.get_size()[0]//100
+        new_size = one_per * self.size
+        self.size += 2
+        transformed = self.pg.transform.scale(self.wrong, (new_size, new_size))
+        self.wrong_rect = transformed.get_rect()
+        self.wrong_rect.center = (self.w//2, self.h//2)
+        if self.size >= 100:
             self.is_animating = False
+
+        self.screen.blit(transformed, self.wrong_rect)

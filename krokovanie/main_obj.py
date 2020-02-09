@@ -12,7 +12,7 @@ class Level:
         #start position of bunny
         self.bunny_pos = (-130, 260)
         #max height for jumping bunnny
-        self.bunny_jump = 10
+        self.bunny_jump = 11
         self.bunny_jump_pos = self.bunny_jump
         #if bunny is already jumping
         self.isJumping = False
@@ -186,7 +186,7 @@ class Level:
                 neg = -1 if self.bunny_jump_pos < 0 else 1
                 y -= int((self.bunny_jump_pos ** 2) * 0.5) * neg
                 self.bunny_jump_pos -= 1
-                x += 7
+                x += 6.2
             elif y + 258 >= height and self.bunny_jump_pos < 0:
                 self.bunny_jump_pos = self.bunny_jump
                 self.isJumping = False
