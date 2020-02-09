@@ -1,8 +1,3 @@
-nazvy celej hry
+nazov celej hry
 nazvy jednotlivych hier na hover
-!zvyraznit zabku na hover
-lepsi system na zabky
-	system si vyberie nahodnu moznost z dict a premiesa cisla
-	priklad dict = {13: [10,2,6,7], 10: [5,6,4,1]}
-	ked bude na konci moznosti tak pojdem odznova
 lepsi system na zajkov = obcasne blbne

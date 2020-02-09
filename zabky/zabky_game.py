@@ -14,16 +14,18 @@ const['game'] = None
 const['color'] = files.colors.Consts_colors()
 const['window'] = files.window.Consts_window()
 
-def zabky_level(pg, screen, level_status, level_max):
+def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
     mouse_clicked = False
     mouse_coor = (0,0)
     #init the main object
     level = Level(level_status, pg)
+    level.left_side = left_side
+    level.right_side = right_side
     clock = pg.time.Clock()
     #get images
     images = level.load_images(const['window'].WIDTH, const['window'].HEIGHT)
     #zabky
-    numbers = level.numbers_left
+    numbers = level.right_side
     frogs = []
     for i in range(len(numbers)):
         frogs.append(Zabka(numbers[i], pg, 80*i))
@@ -91,7 +93,7 @@ def zabky_level(pg, screen, level_status, level_max):
                     frog.is_jumping = True
                     zabiek_na_dreve += 1
                     frog.kolkata = zabiek_na_dreve
-                    frog.max = level.left_side_n
+                    frog.max = 2
             elif frog.as_rect().collidepoint(mouse_coor):
                 frog.active_grp = frog.grp2
                 frog.active = 2

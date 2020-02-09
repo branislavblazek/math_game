@@ -5,10 +5,8 @@ class Level:
     def __init__(self, status, pygame):
         self.level_status = status
         self.pg = pygame
-        self.numbers_left = [10,5,2,1]
-        self.left_side = self.get_left_side()
-        self.left_side_n = self.left_side
-        self.left_side = sum(self.left_side)
+        self.left_side = 0
+        self.right_side = [1]
         #for help:
         self.start_pos = [0,0]
         self.max_off = 200
@@ -55,20 +53,6 @@ class Level:
         images['weight'] = group
 
         return images
-
-    def get_left_side(self):
-        numbers = self.numbers_left.copy()
-        #dve alebo jedno cislo
-        percento = random.randint(0,100)
-        #chcem 60percent ze padne dvojka
-        cislo = 0
-        if percento > 40:
-            cislo = 2
-        else:
-            cislo = 1
-
-        random.shuffle(numbers)
-        return numbers[:cislo]
 
     def generate_text(self, width, color):
         intro_textObj = self.pg.font.SysFont('impact', 46)
