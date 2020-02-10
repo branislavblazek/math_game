@@ -28,7 +28,7 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
     numbers = level.right_side
     frogs = []
     for i in range(len(numbers)):
-        frogs.append(Zabka(numbers[i], pg, 80*i))
+        frogs.append(Zabka(numbers[i], pg, 100*i))
     exit_code = -1
     zabiek_na_dreve = 0
     win_animacia = Win(pg, screen)
@@ -45,7 +45,7 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
     surface_help_rect = surface_help.get_rect()
 
     text_help_font = pg.font.Font('freesansbold.ttf', 32)
-    text_help_surface = text_help_font.render('11 = a + b', True, const['color'].BLACK)
+    text_help_surface = text_help_font.render(str(level.left_side) + ' = a + b', True, const['color'].BLACK)
     text_help_rect = text_help_surface.get_rect()
     #--------TEXT
     intro_text, intro_rect = level.generate_text(const['window'].WIDTH, const['color'].BLACK)
@@ -61,17 +61,17 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
         #set log
         screen.blit(images['log'], (const['window'].WIDTH//3-300, 390))
         #set box
-        screen.blit(images['box'], (610, 400))
+        screen.blit(images['box'], (610, 390))
         #set home
         screen.blit(images['back'], images['back_rect'])
         #HELPING
-            #set ask
-        images['q_mark_rect'].topleft = level.act_pos
-        screen.blit(images['q_mark'], images['q_mark_rect'])
             #rect
         surface_help_rect[0] = level.act_pos[0]
         surface_help_rect[1] = level.act_pos[1]
         screen.blit(surface_help, surface_help_rect)
+            #set ask
+        images['q_mark_rect'].topleft = level.act_pos
+        screen.blit(images['q_mark'], images['q_mark_rect'])
             #text
         text_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width(), 20)
         screen.blit(text_help_surface, text_help_rect)

@@ -78,13 +78,13 @@ def zajo_level(pg, screen, level_status, level_max):
         screen.blit(images['back'], images['back_rect'])
 
         #HELPING
-            #set ask
-        images['q_mark_rect'].topleft = level.act_pos
-        screen.blit(images['q_mark'], images['q_mark_rect'])
             #rect
         surface_help_rect[0] = level.act_pos[0]
         surface_help_rect[1] = level.act_pos[1]
         screen.blit(surface_help, surface_help_rect)
+            #set ask
+        images['q_mark_rect'].topleft = level.act_pos
+        screen.blit(images['q_mark'], images['q_mark_rect'])
             #text
         text_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width(), 20)
         screen.blit(text_help_surface, text_help_rect)

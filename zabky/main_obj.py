@@ -24,15 +24,17 @@ class Level:
             "star_full": self.pg.image.load(path + 'star_1.png'),
             "star_null": self.pg.image.load(path + 'star_0.png'),
             "back": anim.back,
-            "q_mark": anim.q_mark
+            "q_mark": anim.q_mark,
+            "help_frog": self.pg.image.load(path + 'frog3.png')
         }
         images['farm'] = self.pg.transform.scale(images['farm'], (window_width, window_height))
         images['log_end'] = self.pg.transform.scale(images['log_end'], (200, 200))
         images['log'] = self.pg.transform.scale(images['log'], (560,200))
-        images['box'] = self.pg.transform.scale(images['box'], (380, 380))
+        images['box'] = self.pg.transform.scale(images['box'], (390, 390))
         images['weight'] = self.pg.transform.scale(images['weight'], (180, 200))
         images['back_rect'] = images['back'].get_rect()
         images['q_mark_rect'] = images['q_mark'].get_rect()
+        iamges['help_frog'] = self.pg.transform.scale(images['help_frog'], (50, 50))
 
 
         #adding text on weight img
@@ -65,7 +67,7 @@ class Zabka:
     def __init__(self, vaha, pg, posun=0):
         self.pg = pg
         self.vaha = vaha
-        self.base_coor = [610+posun, 300]
+        self.base_coor = [590+posun, 290]
         self.x = self.base_coor[0]
         self.y = self.base_coor[1]
         self.jump_base = 11
@@ -76,10 +78,10 @@ class Zabka:
         #udava ci je alebo nie je na hojdacke
         self.na_hojdacke = 0
         path = 'zabky/resources/'
-        self.img = self.pg.image.load(path + 'frog.png')
-        self.img = self.pg.transform.scale(self.img, (120, 150))
-        self.img2 = self.pg.image.load(path + 'frog2.png')
-        self.img2 = self.pg.transform.scale(self.img2, (120, 150))
+        self.img = self.pg.image.load(path + 'frog2.png')
+        #self.img = self.pg.transform.scale(self.img, (160, 160))
+        self.img2 = self.pg.image.load(path + 'frog.png')
+        #self.img2 = self.pg.transform.scale(self.img2, (160, 160))
         self.posun = posun
         #ako kolkata zabka je na hojdacke, nieco ako index
         self.kolkata = -1
@@ -103,7 +105,7 @@ class Zabka:
         else:
             plus = 0
 
-        xxx = self.pg.Rect(40+plus,80,50,50)
+        xxx = self.pg.Rect(55+plus,80,50,50)
         sprite.image.blit(text, xxx)
 
         group = self.pg.sprite.Group()
@@ -118,7 +120,11 @@ class Zabka:
                 if self.jump_count < 0:
                     neg = -1
                 self.y -= (self.jump_count ** 2) * 0.5 * neg
-                posun = self.posun//80
+
+                posun = self.posun//100
+                if posun >= 3:
+                    posun += 5
+
                 self.x += (13+posun) * self.jump_direction
                 self.jump_count -= 1
             else:
