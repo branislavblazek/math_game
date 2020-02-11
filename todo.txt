@@ -2,3 +2,5 @@ nazov celej hry
 nazvy jednotlivych hier na hover
 lepsi system na zajkov = obcasne blbne
 najst obrazok pre kamene
+optimalizacia pre _x600
+mozno odstranit travu v pozadi pre zajka vpravo dole

@@ -26,13 +26,17 @@ def getRockIndex(x):
     return x // const['game'].ROCK_WIDTH
 
 def zajo_level(pg, screen, level_status, level_max):
+    screen_type = 1 if pg.display.Info().current_h > 768 else 2
     #init the object
     level = Level(level_status, pg)
+    if screen_type == 2:
+        level.bunny_pos = (-130, 220)
     clock = pg.time.Clock()
     win_animacia = Win(pg, screen)
     lose_animacia = Lose(pg, screen)
     #get height for rocks
-    level.random_rock_height(const['game'].ROCK_NUM, const['game'].ROCK_TOP_OFFSET)
+    offset = const['game'].ROCK_TOP_OFFSET if screen_type == 1 else 380
+    level.random_rock_height(const['game'].ROCK_NUM, offset)
     #get images and get height of rocks
     images, const['game'].rock_height = level.load_images(const['game'].ROCK_WIDTH)
     #set up the text
@@ -47,7 +51,7 @@ def zajo_level(pg, screen, level_status, level_max):
     mouse_clicked = False
     count_jump = -1
     #home button
-    images['back_rect'].topleft = (0,const['window'].HEIGHT-images['back'].get_height())
+    images['back_rect'].topleft = (0,pg.display.Info().current_h-images['back'].get_height())
     #-------HELPING
     level.start_pos = [const['window'].WIDTH-images['q_mark'].get_width(), 0]
     level.act_pos = level.start_pos.copy()
@@ -68,7 +72,8 @@ def zajo_level(pg, screen, level_status, level_max):
     level.start = True
     while True:
         # fill the screen with the grass
-        screen.blit(images['background'], (0,-50))
+        back_pos = (0,-50) if screen_type == 1 else (0,-150)
+        screen.blit(images['background'], back_pos)
         # place level info
         #screen.blit(level_font_surface, level_font_rect)
         for star in range(level_max):
@@ -97,7 +102,8 @@ def zajo_level(pg, screen, level_status, level_max):
         screen.blit(arrow_help, arrow_help_rect)
 
         # place start rock
-        screen.blit(images["rock"], level.rocks_coors(0,460, -2))
+        y = 460 if screen_type == 1 else 440
+        screen.blit(images["rock"], level.rocks_coors(0, y, -2))
         #place rocks
         for i in range(len(level.h_rocks)):
             y = level.h_rocks[i]
@@ -125,12 +131,26 @@ def zajo_level(pg, screen, level_status, level_max):
         #place text
         screen.blit(intro_text, intro_rect)
         #place instructions
-        left_offset = (const['window'].WIDTH - images["arrow_to"].get_rect().size[0] * const['game'].ins_num) // 2
+        #calculate for resolutions
+        image1 = images["arrow_to"]
+        image2 = images["arrow_back"]
+        y = 200
+        m = 92
+        left_offset = 0
+
+        if screen_type == 2:
+            image1 = pg.transform.scale(image1, (68,41))
+            image2 = pg.transform.scale(image2, (68,41))
+            y = 150
+            m = 75
+            left_offset += 60
+
+        left_offset += (const['window'].WIDTH - images["arrow_to"].get_rect().size[0] * const['game'].ins_num) // 2
         for i in range(len(ins)):
             if ins[i] == 1:
-                screen.blit(images["arrow_to"], (i*92 + left_offset, 200))
+                screen.blit(image1, (i*m + left_offset, y))
             elif ins[i] == 0:
-                screen.blit(images["arrow_back"], (i*92 + left_offset, 200))
+                screen.blit(image2, (i*m + left_offset, y))
 
         # place bunny
         screen.blit(images["bunny"], level.bunny_coors())

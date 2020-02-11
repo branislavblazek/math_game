@@ -6,6 +6,7 @@ class Level:
         #in level_status is number of level
         self.level_status = status
         self.pg = pygame
+        self.screen_type = 1 if self.pg.display.Info().current_h > 768 else 2
         #start game
         self.start = False
         #number of first number under first rock
@@ -118,7 +119,8 @@ class Level:
             rect = surface.get_rect()
             width = int(i * one_width + one_width // 2)
             num_rect.append(rect)
-            num_rect[-1].center = (width, 700)
+            y = 700 if self.screen_type == 1 else 600
+            num_rect[-1].center = (width, y)
         return num_surface, num_rect
 
     def all_same(self, items):
