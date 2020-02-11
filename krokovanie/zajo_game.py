@@ -58,15 +58,17 @@ def zajo_level(pg, screen, level_status, level_max):
     surface_help_rect = surface_help.get_rect()
 
     text_help_font = pg.font.Font('freesansbold.ttf', 32)
-    text_help_surface = text_help_font.render('11 = a + b', True, const['color'].BLACK)
+    #nazorna ukazka ako sa nerobia medzery: :)
+    text_help_surface = text_help_font.render('9      10      11', True, const['color'].BLACK)
     text_help_rect = text_help_surface.get_rect()
+
+    arrow_help = pg.transform.scale(images['arrow_to'], (45,28))
+    arrow_help_rect = arrow_help.get_rect()
     #main loop
     level.start = True
     while True:
         # fill the screen with the grass
-        for x in range(int(const['window'].WIDTH/images["grass"].get_width()+1)):
-            for y in range(int(const['window'].HEIGHT/images["grass"].get_height()+1)):
-                screen.blit(images["grass"], (x*images["grass"].get_width(), y*images["grass"].get_height()))
+        screen.blit(images['background'], (0,-50))
         # place level info
         #screen.blit(level_font_surface, level_font_rect)
         for star in range(level_max):
@@ -88,6 +90,11 @@ def zajo_level(pg, screen, level_status, level_max):
             #text
         text_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width(), 20)
         screen.blit(text_help_surface, text_help_rect)
+            #arrows
+        arrow_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width() + 20, 20)
+        screen.blit(arrow_help, arrow_help_rect)
+        arrow_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width() + 115, 20)
+        screen.blit(arrow_help, arrow_help_rect)
 
         # place start rock
         screen.blit(images["rock"], level.rocks_coors(0,460, -2))

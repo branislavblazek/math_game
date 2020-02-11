@@ -83,18 +83,16 @@ class Level:
         anim = files.animation_images.Get_images(self.pg)
         path = 'krokovanie/resources/'
         images = {
-            "grass": self.pg.image.load(path + 'grass.png'),
+            "background": self.pg.image.load(path + 'back.png'),
             "bunny": self.pg.image.load(path + 'bunny.png'),
             "rock": self.pg.image.load(path + 'rock.png'),
-            "arrow_to": self.pg.image.load(path + 'arrow.png'),
+            "arrow_to": self.pg.image.load(path + 'arrow21.png'),
             "star_null": self.pg.image.load(path + 'star_0.png'),
             "star_full": self.pg.image.load(path + 'star_1.png'),
             "back": anim.back,
             "q_mark": anim.q_mark
         }
-        images['arrow_to'] = self.pg.transform.scale(images['arrow_to'], (90, 90))
         images["arrow_back"] = self.pg.transform.flip(images["arrow_to"], True, False)
-        #edit images
         pomer = width / (images["rock"].get_width() / 100)
         new_height = int(images["rock"].get_height() / 100 * pomer)
         images["rock"] = self.pg.transform.scale(images["rock"], (width,new_height))

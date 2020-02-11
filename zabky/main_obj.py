@@ -34,7 +34,7 @@ class Level:
         images['weight'] = self.pg.transform.scale(images['weight'], (180, 200))
         images['back_rect'] = images['back'].get_rect()
         images['q_mark_rect'] = images['q_mark'].get_rect()
-        iamges['help_frog'] = self.pg.transform.scale(images['help_frog'], (50, 50))
+        images['help_frog'] = self.pg.transform.scale(images['help_frog'], (50, 50))
 
 
         #adding text on weight img

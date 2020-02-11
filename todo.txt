@@ -1,3 +1,4 @@
 nazov celej hry
 nazvy jednotlivych hier na hover
 lepsi system na zajkov = obcasne blbne
+najst obrazok pre kamene
