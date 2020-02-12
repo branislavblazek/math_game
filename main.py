@@ -22,11 +22,11 @@ screen_height = pygame.display.Info().current_h
 if screen_height <= 768:
     height = 650
 
-screen = pygame.display.set_mode((const['window'].WIDTH, 650))
+screen = pygame.display.set_mode((const['window'].WIDTH, height))
 pygame.display.set_caption('ahoj svet' + str(pygame.display.Info().current_h))
 
 def game_intro():
-    screen_type = 1 if pygame.display.Info().current_h > 768 else 2 #if pygame.display.Info().current_h <= 768
+    screen_type = 1 if pygame.display.Info().current_h > 700 else 2 #if pygame.display.Info().current_h <= 768
 
     mouse_coors = [0,0]
     text_one = pygame.font.Font('freesansbold.ttf', 115)
@@ -34,12 +34,12 @@ def game_intro():
     #------PRVY DOMCEK
     game1 = pygame.image.load('resources/home.png')
     game1_maskot = pygame.image.load('krokovanie/resources/bunny.png')
+    game1_rect = game1.get_rect()
     if screen_type == 1:
         game1_maskot_obj = files.intro_obj.Mascot_animation((240,414))
         game1_rect.topleft = (30,400)
     elif screen_type == 2:
         game1 = pygame.transform.scale(game1, (450,258))
-        game1_rect = game1.get_rect()
         game1_rect.topleft = (90,340)
         game1_maskot = pygame.transform.scale(game1_maskot, (101,194))
         game1_maskot_obj = files.intro_obj.Mascot_animation((260,385))

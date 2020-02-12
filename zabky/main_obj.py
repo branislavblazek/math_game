@@ -28,26 +28,25 @@ class Level:
             "help_frog": self.pg.image.load(path + 'frog3.png')
         }
         images['farm'] = self.pg.transform.scale(images['farm'], (window_width, window_height))
-        images['log_end'] = self.pg.transform.scale(images['log_end'], (200, 200))
-        images['log'] = self.pg.transform.scale(images['log'], (560,200))
+        images['log_end'] = self.pg.transform.scale(images['log_end'], (180, 180))
+        images['log'] = self.pg.transform.scale(images['log'], (560,70))
         images['box'] = self.pg.transform.scale(images['box'], (390, 390))
-        images['weight'] = self.pg.transform.scale(images['weight'], (180, 200))
+        images['weight'] = self.pg.transform.scale(images['weight'], (180, 180))
         images['back_rect'] = images['back'].get_rect()
         images['q_mark_rect'] = images['q_mark'].get_rect()
         images['help_frog'] = self.pg.transform.scale(images['help_frog'], (50, 50))
-
 
         #adding text on weight img
         sprite = self.pg.sprite.Sprite()
         sprite.image = images['weight']
         sprite.rect = images['weight'].get_rect()
-        sprite.rect.topleft = (65, 300)
+        sprite.rect.topleft = (20, 270)
         font = self.pg.font.SysFont('Sans', 50)
         if self.left_side < 10:
             plus = 10
         else:
             plus = 0
-        text = font.render(str(self.left_side), True, (0,0,0))
+        text = font.render(str(self.left_side), True, (255, 255, 255))
         xxx = self.pg.Rect(65+plus,80,50,50)
         sprite.image.blit(text, xxx)
         group = self.pg.sprite.Group()

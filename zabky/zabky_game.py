@@ -45,8 +45,11 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
     surface_help_rect = surface_help.get_rect()
 
     text_help_font = pg.font.Font('freesansbold.ttf', 32)
-    text_help_surface = text_help_font.render(str(level.left_side) + ' = a + b', True, const['color'].BLACK)
+    text_help_surface = text_help_font.render(str(level.left_side) + ' =       +       ', True, const['color'].BLACK)
     text_help_rect = text_help_surface.get_rect()
+
+    frog_help = images['help_frog']
+    frog_help_rect = frog_help.get_rect()
     #--------TEXT
     intro_text, intro_rect = level.generate_text(const['window'].WIDTH, const['color'].BLACK)
     #------------MAIN LOOP
@@ -57,9 +60,9 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
         #set text
         screen.blit(intro_text, intro_rect)
         #set log end
-        screen.blit(images['log_end'], (const['window'].WIDTH//3-120, 500))
+        screen.blit(images['log_end'], (const['window'].WIDTH//3-120, 460))
         #set log
-        screen.blit(images['log'], (const['window'].WIDTH//3-300, 390))
+        screen.blit(images['log'], (const['window'].WIDTH//3-300, 420))
         #set box
         screen.blit(images['box'], (610, 390))
         #set home
@@ -75,6 +78,11 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
             #text
         text_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width(), 20)
         screen.blit(text_help_surface, text_help_rect)
+            #frogs
+        frog_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width() + 70, 10)
+        screen.blit(frog_help, frog_help_rect)
+        frog_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width() + 150, 10)
+        screen.blit(frog_help, frog_help_rect)
         #weight
         images['weight'].draw(screen)
         #info level
