@@ -50,15 +50,20 @@ def zajo_level(pg, screen, level_status, level_max):
     mouse_coor = [0, 0]
     mouse_clicked = False
     count_jump = -1
-    #home button
+    #-------HOME BUTTON
     images['back_rect'].topleft = (0,pg.display.Info().current_h-images['back'].get_height())
+
+    surface_home = pg.Surface((images['back'].get_width(), images['back'].get_height()))
+    surface_home.set_alpha(128)
+    surface_home.fill((0, 149, 255))
+    surface_home_rect = surface_home.get_rect()
     #-------HELPING
     level.start_pos = [const['window'].WIDTH-images['q_mark'].get_width(), 0]
     level.act_pos = level.start_pos.copy()
 
     surface_help = pg.Surface((300,images['q_mark'].get_height()))
     surface_help.set_alpha(128)
-    surface_help.fill((0, 149, 255))
+    surface_help.fill(const['color'].BLUE)
     surface_help_rect = surface_help.get_rect()
 
     text_help_font = pg.font.Font('freesansbold.ttf', 32)
@@ -82,6 +87,12 @@ def zajo_level(pg, screen, level_status, level_max):
             else:
                 screen.blit(images['star_null'], (star*60+20,25))
 
+        #HOME
+        surface_home_rect[0] = pg.display.Info().current_w - images['back'].get_width()
+        surface_home_rect[1] = pg.display.Info().current_h - images['back'].get_height()
+        images['back_rect'][0] = pg.display.Info().current_w - images['back'].get_width()
+        images['back_rect'][1] = pg.display.Info().current_h - images['back'].get_height()
+        screen.blit(surface_home, surface_home_rect)
         screen.blit(images['back'], images['back_rect'])
 
         #HELPING
@@ -170,6 +181,11 @@ def zajo_level(pg, screen, level_status, level_max):
         else:
             if level.act_pos[0] < level.start_pos[0]:
                 level.act_pos[0] += 6
+
+        if surface_home_rect.collidepoint(mouse_coor):
+            surface_home.fill(const['color'].YELLOW)
+        else:
+            surface_home.fill(const['color'].BLUE)
 
         if images['back_rect'].collidepoint(mouse_coor) and mouse_clicked:
             return 2

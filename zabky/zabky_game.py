@@ -33,8 +33,13 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
     zabiek_na_dreve = 0
     win_animacia = Win(pg, screen)
     lose_animacia = Lose(pg, screen)
-    #------HOME BUTTON
-    images['back_rect'].topleft = (0,const['window'].HEIGHT-images['back'].get_height())
+    #-------HOME BUTTON
+    images['back_rect'].topleft = (0,pg.display.Info().current_h-images['back'].get_height())
+
+    surface_home = pg.Surface((images['back'].get_width(), images['back'].get_height()))
+    surface_home.set_alpha(128)
+    surface_home.fill((0, 149, 255))
+    surface_home_rect = surface_home.get_rect()
     #-------HELPING
     level.start_pos = [const['window'].WIDTH-images['q_mark'].get_width(), 0]
     level.act_pos = level.start_pos.copy()
@@ -45,7 +50,8 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
     surface_help_rect = surface_help.get_rect()
 
     text_help_font = pg.font.Font('freesansbold.ttf', 32)
-    text_help_surface = text_help_font.render(str(level.left_side) + ' =       +       ', True, const['color'].BLACK)
+    medzera = "         " if level.left_side < 10 else "       "
+    text_help_surface = text_help_font.render(str(level.left_side) + ' =' + medzera +  '+       ', True, const['color'].BLACK)
     text_help_rect = text_help_surface.get_rect()
 
     frog_help = images['help_frog']
@@ -66,6 +72,13 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
         #set box
         screen.blit(images['box'], (610, 390))
         #set home
+        screen.blit(images['back'], images['back_rect'])
+        #HOME
+        surface_home_rect[0] = pg.display.Info().current_w - images['back'].get_width()
+        surface_home_rect[1] = pg.display.Info().current_h - images['back'].get_height()
+        images['back_rect'][0] = pg.display.Info().current_w - images['back'].get_width()
+        images['back_rect'][1] = pg.display.Info().current_h - images['back'].get_height()
+        screen.blit(surface_home, surface_home_rect)
         screen.blit(images['back'], images['back_rect'])
         #HELPING
             #rect
@@ -88,9 +101,9 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
         #info level
         for star in range(level_max):
             if star < level_status:
-                screen.blit(images['star_full'], (star*60+20,25))
+                screen.blit(images['star_full'], (star*100+20,25))
             else:
-                screen.blit(images['star_null'], (star*60+20,25))
+                screen.blit(images['star_null'], (star*100+20,25))
         #vaha na hojdacke
         spolu_na_hojdacke_vaha = 0
         #set frog
@@ -117,6 +130,11 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
         else:
             if level.act_pos[0] < level.start_pos[0]:
                 level.act_pos[0] += 6
+
+        if surface_home_rect.collidepoint(mouse_coor):
+            surface_home.fill(const['color'].YELLOW)
+        else:
+            surface_home.fill(const['color'].BLUE)
 
         if images['back_rect'].collidepoint(mouse_coor) and mouse_clicked:
             return 2

@@ -29,15 +29,16 @@ def game_intro():
     screen_type = 1 if pygame.display.Info().current_h > 700 else 2 #if pygame.display.Info().current_h <= 768
 
     mouse_coors = [0,0]
-    text_one = pygame.font.Font('freesansbold.ttf', 115)
 
     #------PRVY DOMCEK
     game1 = pygame.image.load('resources/home.png')
     game1_maskot = pygame.image.load('krokovanie/resources/bunny.png')
     game1_rect = game1.get_rect()
+    x1 = 10
+    x2 = 410
     if screen_type == 1:
-        game1_maskot_obj = files.intro_obj.Mascot_animation((240,414))
-        game1_rect.topleft = (30,400)
+        game1_maskot_obj = files.intro_obj.Mascot_animation((x1 + 210,x2 + 14))
+        game1_rect.topleft = (x1, x2)
     elif screen_type == 2:
         game1 = pygame.transform.scale(game1, (450,258))
         game1_rect.topleft = (90,340)
@@ -46,13 +47,14 @@ def game_intro():
 
     #------DRUHY DOMCEK
     game2 = pygame.image.load('resources/home.png')
-    game2_maskot = pygame.image.load('zabky/resources/frog.png')
+    game2_maskot = pygame.image.load('zabky/resources/frog4.png')
+    x1 = 480
+    x2 = 190
     if screen_type == 1:
-        game2_maskot = pygame.transform.scale(game2_maskot, (135, 173))
-        game2_maskot_obj = files.intro_obj.Mascot_animation((630, 200))
-        game2_maskot_obj.max_off = 140
+        game2_maskot_obj = files.intro_obj.Mascot_animation((x1 + 210, x2 + 60))
+        game2_maskot_obj.max_off = 130
         game2_rect = game2.get_rect()
-        game2_rect.topleft = (420, 140)
+        game2_rect.topleft = (x1, x2)
     elif screen_type == 2:
         game2 = pygame.transform.scale(game2, (450,258))
         game2_maskot = pygame.transform.scale(game2_maskot, (113, 120))
@@ -70,10 +72,17 @@ def game_intro():
         game3_rect = game3.get_rect()
         game3_rect.topleft = (150, 20)
 
+    #-----AUTORI
     autor_textObj = pygame.font.SysFont('verdana', 16)
-    autor_textSurfaceObj = autor_textObj.render('Verbová Nikola, Blažek Branislav', True, const['colors'].BLACK)
+    autor_textSurfaceObj = autor_textObj.render('Blažek Branislav, Verbová Nikola', True, const['colors'].BLACK)
     autor_textRectObj = autor_textSurfaceObj.get_rect()
     autor_textRectObj.center = (pygame.display.Info().current_w-140,pygame.display.Info().current_h-16)
+
+    #-----NAZOV
+    nazov_font = pygame.font.SysFont('verdana', 75, True)
+    nazov_surface = nazov_font.render('Hejmat!', True, const['colors'].RED)
+    nazov_rect = nazov_surface.get_rect()
+    nazov_rect.center = (780, 70)
 
     while True:
         #------MAIN LOOP
@@ -118,6 +127,7 @@ def game_intro():
         screen.blit(game2_maskot, game2_maskot_obj.position())
         screen.blit(game2, game2_rect)
         screen.blit(autor_textSurfaceObj, autor_textRectObj)
+        screen.blit(nazov_surface, nazov_rect)
         pygame.display.update()
 
 game_intro()

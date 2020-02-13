@@ -87,13 +87,13 @@ class Level:
             "background": self.pg.image.load(path + 'back.png'),
             "bunny": self.pg.image.load(path + 'bunny.png'),
             "rock": self.pg.image.load(path + 'rock.png'),
-            "arrow_to": self.pg.image.load(path + 'arrow21.png'),
-            "star_null": self.pg.image.load(path + 'star_0.png'),
-            "star_full": self.pg.image.load(path + 'star_1.png'),
+            "arrow_to": self.pg.image.load(path + 'arrow22.png'),
+            "arrow_back": self.pg.image.load(path + 'arrow21.png'),
+            "star_null": self.pg.image.load(path + 'mrkva22.png'),
+            "star_full": self.pg.image.load(path + 'mrkva2.png'),
             "back": anim.back,
             "q_mark": anim.q_mark
         }
-        images["arrow_back"] = self.pg.transform.flip(images["arrow_to"], True, False)
         pomer = width / (images["rock"].get_width() / 100)
         new_height = int(images["rock"].get_height() / 100 * pomer)
         images["rock"] = self.pg.transform.scale(images["rock"], (width,new_height))

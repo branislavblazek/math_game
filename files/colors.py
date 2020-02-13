@@ -5,7 +5,7 @@ class Consts_colors:
         self.WHITE    = (255, 255, 255)
         self.RED      = (255,   0,   0)
         self.GREEN    = (  0, 255,   0)
-        self.BLUE     = (  0,   0, 255)
+        self.BLUE     = (  0, 149, 255)
         self.YELLOW   = (255, 255,   0)
         self.ORANGE   = (255, 128,   0)
         self.PURPLE   = (255,   0, 255)

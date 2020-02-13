@@ -21,8 +21,8 @@ class Level:
             "log": self.pg.image.load(path + 'log.png'),
             "box": self.pg.image.load(path + 'box.png'),
             "weight": self.pg.image.load(path + 'weight.png'),
-            "star_full": self.pg.image.load(path + 'star_1.png'),
-            "star_null": self.pg.image.load(path + 'star_0.png'),
+            "star_full": self.pg.image.load(path + 'lekno.png'),
+            "star_null": self.pg.image.load(path + 'lekno2.png'),
             "back": anim.back,
             "q_mark": anim.q_mark,
             "help_frog": self.pg.image.load(path + 'frog3.png')
