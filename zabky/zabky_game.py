@@ -114,7 +114,6 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
         screen.blit(frog_help, frog_help_rect)
         #weight
         images['weight'].sprites()[0].rect.top = 415 - log_rect.top + 280
-        print(log_rect.top)
         images['weight'].draw(screen)
         #info level
         for star in range(level_max):
@@ -126,7 +125,7 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
         spolu_na_hojdacke_vaha = 0
         #set frog
         can_collide = True
-        for frog in enumerate(frogs):
+        for frog in frogs:
             if frog.as_rect().collidepoint(mouse_coor) and mouse_clicked:
                 mouse_clicked = False
                 if frog.jump_direction == -1:
