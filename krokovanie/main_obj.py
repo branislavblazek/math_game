@@ -27,7 +27,7 @@ class Level:
         #where the bunny should jump
         self.index_rock_jump = -1
         #animation for start
-        self.animation_offset = 300
+        self.animation_offset = 200
         # for fading in rocks
         self.rock_animation_start = False
         self.rock_animation_offset = self.animation_offset

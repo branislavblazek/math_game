@@ -1,4 +1,2 @@
-nazov celej hry
 lepsi system na zajkov = obcasne blbne
 zvuky
-zdeformovana zabka lebo transform

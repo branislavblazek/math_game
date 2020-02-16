@@ -22,6 +22,7 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
     level.left_side = left_side
     level.right_side = right_side
     clock = pg.time.Clock()
+    spolu_na_hojdacke_vaha = 0
     #get images
     images = level.load_images(const['window'].WIDTH, const['window'].HEIGHT)
     #zabky
@@ -63,16 +64,31 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
         #---------PLACE IMAGES
         #set backgrund image
         screen.blit(images['farm'], (0,0))
+
         #set text
         screen.blit(intro_text, intro_rect)
+
         #set log end
         screen.blit(images['log_end'], (const['window'].WIDTH//3-120, 460))
+
         #set log
-        screen.blit(images['log'], (const['window'].WIDTH//3-300, 420))
+        uhol = level.log_angle(spolu_na_hojdacke_vaha)
+        log = images['log'].copy()
+        log = pg.transform.rotozoom(log, uhol, 1)
+        start_log_x = const['window'].WIDTH//3-20
+        start_log_y = 450
+        log_rect = log.get_rect()
+        log_rect.center = (start_log_x, start_log_y)
+
+        #log = pg.transform.rotozoom(log, 10, 1)
+        screen.blit(log, log_rect)
+
         #set box
         screen.blit(images['box'], (610, 390))
+
         #set home
         screen.blit(images['back'], images['back_rect'])
+
         #HOME
         surface_home_rect[0] = pg.display.Info().current_w - images['back'].get_width()
         surface_home_rect[1] = pg.display.Info().current_h - images['back'].get_height()
@@ -97,6 +113,8 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
         frog_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width() + 150, 10)
         screen.blit(frog_help, frog_help_rect)
         #weight
+        images['weight'].sprites()[0].rect.top = 415 - log_rect.top + 280
+        print(log_rect.top)
         images['weight'].draw(screen)
         #info level
         for star in range(level_max):
@@ -107,7 +125,8 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
         #vaha na hojdacke
         spolu_na_hojdacke_vaha = 0
         #set frog
-        for frog in frogs:
+        can_collide = True
+        for frog in enumerate(frogs):
             if frog.as_rect().collidepoint(mouse_coor) and mouse_clicked:
                 mouse_clicked = False
                 if frog.jump_direction == -1:
@@ -115,9 +134,10 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
                     zabiek_na_dreve += 1
                     frog.kolkata = zabiek_na_dreve
                     frog.max = 2
-            elif frog.as_rect().collidepoint(mouse_coor):
+            elif frog.as_rect().collidepoint(mouse_coor) and can_collide:
                 frog.active_grp = frog.grp2
                 frog.active = 2
+                can_collide = False
             else:
                 frog.active_grp = frog.grp1
                 frog.active = 1

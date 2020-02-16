@@ -23,12 +23,18 @@ if screen_height <= 768:
     height = 650
 
 screen = pygame.display.set_mode((const['window'].WIDTH, height))
-pygame.display.set_caption('ahoj svet' + str(pygame.display.Info().current_h))
+pygame.display.set_caption(const['window'].TITLE)
 
 def game_intro():
     screen_type = 1 if pygame.display.Info().current_h > 700 else 2 #if pygame.display.Info().current_h <= 768
 
     mouse_coors = [0,0]
+
+    #------CESTA
+    road = pygame.image.load('resources/road3.png')
+    road_down = pygame.transform.rotozoom(road, 8, 1)
+    road_down = pygame.transform.flip(road_down, True, True)
+    road_middle = pygame.transform.flip(road, True, False)
 
     #------PRVY DOMCEK
     game1 = pygame.image.load('resources/home.png')
@@ -37,16 +43,20 @@ def game_intro():
     x1 = 10
     x2 = 410
     if screen_type == 1:
+        #game1 = pygame.transform.scale(game1, (500,287))
         game1_maskot_obj = files.intro_obj.Mascot_animation((x1 + 210,x2 + 14))
+        #game1_maskot = pygame.transform.scale(game1_maskot, (112, 215))
         game1_rect.topleft = (x1, x2)
+        game1_maskot_obj.max_off = 190
     elif screen_type == 2:
         game1 = pygame.transform.scale(game1, (450,258))
-        game1_rect.topleft = (90,340)
+        game1_rect = game1.get_rect()
+        game1_rect.topleft = (170,340)
         game1_maskot = pygame.transform.scale(game1_maskot, (101,194))
-        game1_maskot_obj = files.intro_obj.Mascot_animation((260,385))
+        game1_maskot_obj = files.intro_obj.Mascot_animation((330,385))
 
     #------DRUHY DOMCEK
-    game2 = pygame.image.load('resources/home.png')
+    game2 = pygame.image.load('resources/home_left_free.png')
     game2_maskot = pygame.image.load('zabky/resources/frog4.png')
     x1 = 480
     x2 = 190
@@ -70,7 +80,7 @@ def game_intro():
     if screen_type == 2:
         game3 = pygame.transform.scale(game3, (450,258))
         game3_rect = game3.get_rect()
-        game3_rect.topleft = (150, 20)
+        game3_rect.topleft = (10, 20)
 
     #-----AUTORI
     autor_textObj = pygame.font.SysFont('verdana', 16)
@@ -121,6 +131,13 @@ def game_intro():
                     zabky_main_func(pygame, screen)
 
         screen.fill((242, 225, 155))
+        if screen_type == 1:
+            screen.blit(road_down, (170,490))
+            screen.blit(road_middle, (80,270))
+        elif screen_type == 2:
+            screen.blit(road_down, (140,400))
+            screen.blit(road_middle, (130,190))
+
         screen.blit(game3, game3_rect)
         screen.blit(game1_maskot, game1_maskot_obj.position())
         screen.blit(game1, game1_rect)

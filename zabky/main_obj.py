@@ -62,6 +62,17 @@ class Level:
         intro_textRectObj.center = (width//2,120)
         return intro_textSurfaceObj, intro_textRectObj
 
+    def log_angle(self, weight):
+        #funckia bude pocitat uhol na otacanie dosky
+        lave = self.left_side
+        prave = weight
+        max_ohnutie = 20
+        jedno_ohnutie = max_ohnutie / lave
+        angle = max_ohnutie - jedno_ohnutie * prave
+
+        return angle
+
+
 class Zabka:
     def __init__(self, vaha, pg, posun=0):
         self.pg = pg
