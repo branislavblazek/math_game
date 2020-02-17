@@ -1,3 +1,5 @@
 lepsi system na zajkov = obcasne blbne
 zvuky
 nazov hry
+mensie zabky na boxe
+ohranicit pismo pri zajkovi

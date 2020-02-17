@@ -41,6 +41,8 @@ def zajo_level(pg, screen, level_status, level_max):
     images, const['game'].rock_height = level.load_images(const['game'].ROCK_WIDTH)
     #set up the text
     intro_text, intro_rect = level.generate_text(const['window'].WIDTH, const['color'].BLACK)
+    intro_text_shade, intro_text_shade_rect =  level.generate_text(const['window'].WIDTH, const['color'].WHITE)
+    intro_text_shade_rect.left -= 4
     #set up the numbers
     numbers_text, numbers_rect = level.generate_numbers(const['game'].ROCK_WIDTH, const['color'].RED, const['game'].ROCK_NUM + 1)
     #set up instructions
@@ -140,6 +142,7 @@ def zajo_level(pg, screen, level_status, level_max):
             new_rect[1] = level.numbers_coors(new_rect[1], is_last)
             screen.blit(numbers_text[i], new_rect)
         #place text
+        screen.blit(intro_text_shade, intro_text_shade_rect)
         screen.blit(intro_text, intro_rect)
         #place instructions
         #calculate for resolutions
