@@ -77,7 +77,7 @@ class Zabka:
     def __init__(self, vaha, pg, posun=0):
         self.pg = pg
         self.vaha = vaha
-        self.base_coor = [590+posun, 290]
+        self.base_coor = [590+posun, 300]
         self.x = self.base_coor[0]
         self.y = self.base_coor[1]
         self.jump_base = 11
@@ -89,9 +89,9 @@ class Zabka:
         self.na_hojdacke = 0
         path = 'zabky/resources/'
         self.img = self.pg.image.load(path + 'frog2.png')
-        #self.img = self.pg.transform.scale(self.img, (160, 160))
+        self.img = self.pg.transform.scale(self.img, (130, 139))
         self.img2 = self.pg.image.load(path + 'frog.png')
-        #self.img2 = self.pg.transform.scale(self.img2, (160, 160))
+        self.img2 = self.pg.transform.scale(self.img2, (130, 139))
         self.posun = posun
         #ako kolkata zabka je na hojdacke, nieco ako index
         self.kolkata = -1
@@ -115,7 +115,7 @@ class Zabka:
         else:
             plus = 0
 
-        xxx = self.pg.Rect(55+plus,80,50,50)
+        xxx = self.pg.Rect(45+plus,70,50,50)
         sprite.image.blit(text, xxx)
 
         group = self.pg.sprite.Group()

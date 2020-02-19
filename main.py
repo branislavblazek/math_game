@@ -90,7 +90,7 @@ def game_intro():
 
     #-----NAZOV
     nazov_font = pygame.font.SysFont('verdana', 75, True)
-    nazov_surface = nazov_font.render('Hejmat!', True, const['colors'].RED)
+    nazov_surface = nazov_font.render(const['window'].TITLE, True, const['colors'].RED)
     nazov_rect = nazov_surface.get_rect()
     nazov_rect.center = (780, 70)
 

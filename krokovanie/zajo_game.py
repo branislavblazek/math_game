@@ -94,6 +94,7 @@ def zajo_level(pg, screen, level_status, level_max):
         surface_home_rect[1] = pg.display.Info().current_h - images['back'].get_height()
         images['back_rect'][0] = pg.display.Info().current_w - images['back'].get_width()
         images['back_rect'][1] = pg.display.Info().current_h - images['back'].get_height()
+
         screen.blit(surface_home, surface_home_rect)
         screen.blit(images['back'], images['back_rect'])
 
@@ -101,17 +102,22 @@ def zajo_level(pg, screen, level_status, level_max):
             #rect
         surface_help_rect[0] = level.act_pos[0]
         surface_help_rect[1] = level.act_pos[1]
+
         screen.blit(surface_help, surface_help_rect)
             #set ask
         images['q_mark_rect'].topleft = level.act_pos
+
         screen.blit(images['q_mark'], images['q_mark_rect'])
             #text
         text_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width(), 20)
+
         screen.blit(text_help_surface, text_help_rect)
             #arrows
         arrow_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width() + 20, 20)
+
         screen.blit(arrow_help, arrow_help_rect)
         arrow_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width() + 115, 20)
+
         screen.blit(arrow_help, arrow_help_rect)
 
         # place start rock
@@ -141,6 +147,7 @@ def zajo_level(pg, screen, level_status, level_max):
             is_last = True if i == const['game'].ROCK_NUM else False
             new_rect[1] = level.numbers_coors(new_rect[1], is_last)
             screen.blit(numbers_text[i], new_rect)
+
         #place text
         screen.blit(intro_text_shade, intro_text_shade_rect)
         screen.blit(intro_text, intro_rect)

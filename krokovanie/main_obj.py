@@ -86,7 +86,7 @@ class Level:
         images = {
             "background": self.pg.image.load(path + 'back.png'),
             "bunny": self.pg.image.load(path + 'bunny.png'),
-            "rock": self.pg.image.load(path + 'rock.png'),
+            "rock": self.pg.image.load(path + 'rock2.png'),
             "arrow_to": self.pg.image.load(path + 'arrow22.png'),
             "arrow_back": self.pg.image.load(path + 'arrow21.png'),
             "star_null": self.pg.image.load(path + 'mrkva22.png'),

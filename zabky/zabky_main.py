@@ -26,7 +26,7 @@ def zabky_main_func(pg, screen):
     level_max = 4
     level_status = 1
 
-    while level_status <= level_max:
+    while level_status < level_max:
 
         if len(choices2) == 0:
             choices2 = choices.copy()
