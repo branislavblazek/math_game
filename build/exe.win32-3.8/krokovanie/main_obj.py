@@ -1,5 +1,6 @@
 import random
 import files
+from krokovanie.ins import Create_arrows
 
 class Level:
     def __init__(self, status, pygame):
@@ -66,6 +67,10 @@ class Level:
         self.start_pos = [0,0]
         self.max_off = 200
         self.act_pos = self.start_pos
+        #for arrows
+        arrows = Create_arrows()
+        self.smer = arrows.smer
+        self.hodnota = arrows.hodnota
 
     def __repr__(self):
         return self.level_status
@@ -122,60 +127,6 @@ class Level:
             y = 700 if self.screen_type == 1 else 600
             num_rect[-1].center = (width, y)
         return num_surface, num_rect
-
-    def all_same(self, items):
-        return all(x == items[0] for x in items)
-
-    def create_ins(self, base_ins_num, rock_n):
-            ins = []
-            move_rock = 0
-            ins_pocet = base_ins_num
-            sign = 1
-            ins_number = 0
-            while ins_number < ins_pocet:
-                new_ins_len = random.randint(1,3)
-
-                if ins_number + new_ins_len > ins_pocet:
-                    new_ins_len = ins_pocet - ins_number
-
-                if self.all_same(ins[-3:]) and len(ins[-3:]) == 3 and new_ins_len == 3:
-                    new_ins_len -= 1
-
-                if move_rock - new_ins_len < 1 and sign == 0:
-                    new_ins_len = move_rock - 1
-                elif move_rock + new_ins_len > rock_n and sign == 1:
-                    new_ins_len = rock_n - move_rock
-
-                for _ in range(new_ins_len):
-                    ins.append(sign)
-
-                if sign == 1:
-                    move_rock += new_ins_len
-                elif sign == 0:
-                    move_rock -= new_ins_len
-                sign = 1 - sign
-                ins_number += new_ins_len
-
-            if move_rock == 2:
-                nahodne = random.randint(1,3)
-                if nahodne == 1:
-                    indexes = [i for i, x in enumerate(ins) if x == 1]
-                    index_delete = random.choice(indexes)
-                    del ins[index_delete]
-                    base_ins_num -= 1
-                elif nahodne == 3:
-                    indexes = [i for i, x in enumerate(ins) if x == 0]
-                    index_delete = random.choice(indexes)
-                    del ins[index_delete]
-                    move_rock += 1
-            if move_rock == 4:
-                if random.randint(0,1):
-                    indexes = [i for i, x in enumerate(ins) if x == 0]
-                    index_delete = random.choice(indexes)
-                    del ins[index_delete]
-                    move_rock += 1
-
-            return ins, move_rock
 
     def getRockAtPixel(self, x, y, width, height):
         for rock in range(len(self.h_rocks)):

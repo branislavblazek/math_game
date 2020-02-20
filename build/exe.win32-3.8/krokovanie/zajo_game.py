@@ -46,7 +46,8 @@ def zajo_level(pg, screen, level_status, level_max):
     #set up the numbers
     numbers_text, numbers_rect = level.generate_numbers(const['game'].ROCK_WIDTH, const['color'].RED, const['game'].ROCK_NUM + 1)
     #set up instructions
-    ins, move_rock = level.create_ins(const['game'].ins_num, const['game'].ROCK_NUM)
+    ins = level.smer
+    move_rock = level.hodnota
     ins_num = len(ins)
     #mouse
     mouse_coor = [0, 0]
@@ -166,11 +167,11 @@ def zajo_level(pg, screen, level_status, level_max):
             m = 75
             left_offset += 60
 
-        left_offset += (const['window'].WIDTH - images["arrow_to"].get_rect().size[0] * const['game'].ins_num) // 2
+        left_offset += (const['window'].WIDTH - images["arrow_to"].get_rect().size[0] * ins_num) * 0.5
         for i in range(len(ins)):
             if ins[i] == 1:
                 screen.blit(image1, (i*m + left_offset, y))
-            elif ins[i] == 0:
+            elif ins[i] == -1:
                 screen.blit(image2, (i*m + left_offset, y))
 
         # place bunny

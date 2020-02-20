@@ -8,7 +8,6 @@ from files.window import Consts_window
 from files.colors import Consts_colors
 import files.intro_obj
 
-
 pygame.init()
 
 const = {
@@ -56,7 +55,7 @@ def game_intro():
         game1_maskot_obj = files.intro_obj.Mascot_animation((330,385))
 
     #------DRUHY DOMCEK
-    game2 = pygame.image.load('resources/home_left_free.png')
+    game2 = pygame.image.load('resources/home_left_free_color.png')
     game2_maskot = pygame.image.load('zabky/resources/frog4.png')
     x1 = 480
     x2 = 190
@@ -75,8 +74,9 @@ def game_intro():
 
     #-----TRETI DOMCEK
     game3 = pygame.image.load('resources/home2.png')
+    game3 = pygame.transform.flip(game3, True, False)
     game3_rect = game3.get_rect()
-    game3_rect.topleft = (-70, 0)
+    game3_rect.topleft = (-100, 10)
     if screen_type == 2:
         game3 = pygame.transform.scale(game3, (450,258))
         game3_rect = game3.get_rect()
