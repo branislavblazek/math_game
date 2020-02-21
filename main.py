@@ -36,7 +36,8 @@ def game_intro():
     road_middle = pygame.transform.flip(road, True, False)
 
     #------PRVY DOMCEK
-    game1 = pygame.image.load('resources/home.png')
+    game1 = pygame.image.load('resources/home_left_free.png')
+    game1 = pygame.transform.flip(game1, True, False)
     game1_maskot = pygame.image.load('krokovanie/resources/bunny.png')
     game1_rect = game1.get_rect()
     x1 = 10
@@ -50,12 +51,12 @@ def game_intro():
     elif screen_type == 2:
         game1 = pygame.transform.scale(game1, (450,258))
         game1_rect = game1.get_rect()
-        game1_rect.topleft = (170,340)
+        game1_rect.topleft = (120,340)
         game1_maskot = pygame.transform.scale(game1_maskot, (101,194))
         game1_maskot_obj = files.intro_obj.Mascot_animation((330,385))
 
     #------DRUHY DOMCEK
-    game2 = pygame.image.load('resources/home_left_free_color.png')
+    game2 = pygame.image.load('resources/home_left_free.png')
     game2_maskot = pygame.image.load('zabky/resources/frog4.png')
     x1 = 480
     x2 = 190
