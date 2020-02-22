@@ -29,6 +29,11 @@ def game_intro():
 
     mouse_coors = [0,0]
 
+    #-----PODKLAD
+    grass = pygame.image.load('resources/grass.png')
+    grass = pygame.transform.scale(grass, (1143, 850))
+    grass_rect = grass.get_rect()
+    grass_rect.bottom = 768
     #------CESTA
     road = pygame.image.load('resources/road3.png')
     road_down = pygame.transform.rotozoom(road, 8, 1)
@@ -36,7 +41,8 @@ def game_intro():
     road_middle = pygame.transform.flip(road, True, False)
 
     #------PRVY DOMCEK
-    game1 = pygame.image.load('resources/home.png')
+    game1 = pygame.image.load('resources/home_left_free.png')
+    game1 = pygame.transform.flip(game1, True, False)
     game1_maskot = pygame.image.load('krokovanie/resources/bunny.png')
     game1_rect = game1.get_rect()
     x1 = 10
@@ -50,12 +56,12 @@ def game_intro():
     elif screen_type == 2:
         game1 = pygame.transform.scale(game1, (450,258))
         game1_rect = game1.get_rect()
-        game1_rect.topleft = (170,340)
+        game1_rect.topleft = (120,340)
         game1_maskot = pygame.transform.scale(game1_maskot, (101,194))
         game1_maskot_obj = files.intro_obj.Mascot_animation((330,385))
 
     #------DRUHY DOMCEK
-    game2 = pygame.image.load('resources/home_left_free_color.png')
+    game2 = pygame.image.load('resources/home_left_free.png')
     game2_maskot = pygame.image.load('zabky/resources/frog4.png')
     x1 = 480
     x2 = 190
@@ -74,7 +80,6 @@ def game_intro():
 
     #-----TRETI DOMCEK
     game3 = pygame.image.load('resources/home2.png')
-    game3 = pygame.transform.flip(game3, True, False)
     game3_rect = game3.get_rect()
     game3_rect.topleft = (-100, 10)
     if screen_type == 2:
@@ -130,7 +135,8 @@ def game_intro():
                     #-----START ZABKY
                     zabky_main_func(pygame, screen)
 
-        screen.fill((242, 225, 155))
+        screen.blit(grass, grass_rect)
+
         if screen_type == 1:
             screen.blit(road_down, (170,490))
             screen.blit(road_middle, (80,270))

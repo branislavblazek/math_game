@@ -71,7 +71,7 @@ def zajo_level(pg, screen, level_status, level_max):
 
     text_help_font = pg.font.Font('freesansbold.ttf', 32)
     #nazorna ukazka ako sa nerobia medzery: :)
-    text_help_surface = text_help_font.render('9      10      11', True, const['color'].BLACK)
+    text_help_surface = text_help_font.render('9      10      11', True, const['color'].WHITE)
     text_help_rect = text_help_surface.get_rect()
 
     arrow_help = pg.transform.scale(images['arrow_to'], (45,28))
