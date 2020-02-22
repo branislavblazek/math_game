@@ -132,15 +132,17 @@ def zajo_level(pg, screen, level_status, level_max):
 
         level.start_anim()
 
-        if count_jump > 0 and level.isJumping == False:
-            level.isJumping = True
+        if count_jump >= 0 and level.isJumping == False:
+            if count_jump > 0:
+                level.isJumping = True
+
+            index_v_liste = len(ins) - count_jump
+            if index_v_liste == len(ins):
+                ins.append(0)
+            level.bunny_to = ins[index_v_liste]
             level.index_rock_jump = move_rock - count_jump
             count_jump -= 1
             level.now_on_index += 1
-        elif count_jump == 0 and level.isJumping == False:
-            level.index_rock_jump = move_rock - count_jump
-            level.now_on_index += 1
-            count_jump -= 1
 
         #place numbers under rocks
         for i in range(const['game'].ROCK_NUM + 1):
@@ -228,7 +230,7 @@ def zajo_level(pg, screen, level_status, level_max):
 
                 level.isJumping = True
                 level.index_rock_jump = 0
-                count_jump = index - 1
+                count_jump = len(ins) - 1
                 #print('index: ' + str(index) + ' moverock: ' +  str(move_rock))
                 level.going_to_jump = count_jump
 

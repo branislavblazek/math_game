@@ -23,6 +23,9 @@ class Level:
         self.now_on_index = -1
         #where is going to jump
         self.going_to_jump = -1
+        #direction for bunny
+        #1 is for right, -1 for left
+        self.bunny_to = 1
         #height of rocks (top + h)
         self.h_rocks = None
         #where the bunny should jump
@@ -139,6 +142,7 @@ class Level:
         if self.isJumping:
             x = self.bunny_pos[0]
             y = self.bunny_pos[1]
+
             if self.index_rock_jump > -1:
                 height = self.h_rocks[self.index_rock_jump]
             else:
@@ -148,7 +152,12 @@ class Level:
                 neg = -1 if self.bunny_jump_pos < 0 else 1
                 y -= int((self.bunny_jump_pos ** 2) * 0.5) * neg
                 self.bunny_jump_pos -= 1
-                x += 6.2
+
+                if self.bunny_to == 1:
+                    x += 6.2
+                elif self.bunny_to == -1:
+                    x -= 6.2
+
             elif y + 258 >= height and self.bunny_jump_pos < 0:
                 self.bunny_jump_pos = self.bunny_jump
                 self.isJumping = False
