@@ -33,7 +33,7 @@ def game_intro():
     grass = pygame.image.load('resources/grass.png')
     grass = pygame.transform.scale(grass, (1143, 850))
     grass_rect = grass.get_rect()
-    grass_rect.bottom = 768
+    grass_rect.bottom = 768 if screen_type == 1 else 700
     #------CESTA
     road = pygame.image.load('resources/road3.png')
     road_down = pygame.transform.rotozoom(road, 8, 1)
