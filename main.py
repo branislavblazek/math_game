@@ -25,6 +25,7 @@ screen = pygame.display.set_mode((const['window'].WIDTH, height))
 pygame.display.set_caption(const['window'].TITLE)
 
 def game_intro():
+    clock = pygame.time.Clock()
     screen_type = 1 if pygame.display.Info().current_h > 700 else 2 #if pygame.display.Info().current_h <= 768
 
     mouse_coors = [0,0]
@@ -49,16 +50,16 @@ def game_intro():
     x2 = 410
     if screen_type == 1:
         #game1 = pygame.transform.scale(game1, (500,287))
-        game1_maskot_obj = files.intro_obj.Mascot_animation((x1 + 210,x2 + 14))
+        game1_maskot_obj = files.intro_obj.Mascot_animation((x1 + 215,x2 + 30))
         #game1_maskot = pygame.transform.scale(game1_maskot, (112, 215))
         game1_rect.topleft = (x1, x2)
-        game1_maskot_obj.max_off = 190
+        game1_maskot_obj.max_off = 200
     elif screen_type == 2:
         game1 = pygame.transform.scale(game1, (450,258))
         game1_rect = game1.get_rect()
         game1_rect.topleft = (120,340)
         game1_maskot = pygame.transform.scale(game1_maskot, (101,194))
-        game1_maskot_obj = files.intro_obj.Mascot_animation((330,385))
+        game1_maskot_obj = files.intro_obj.Mascot_animation((310,385))
 
     #------DRUHY DOMCEK
     game2 = pygame.image.load('resources/home_left_free.png')
@@ -74,7 +75,7 @@ def game_intro():
         game2 = pygame.transform.scale(game2, (450,258))
         game2_maskot = pygame.transform.scale(game2_maskot, (113, 120))
         game2_maskot_obj = files.intro_obj.Mascot_animation((670, 200))
-        game2_maskot_obj.max_off = 60
+        game2_maskot_obj.max_off = 80
         game2_rect = game2.get_rect()
         game2_rect.topleft = (520, 190)
 
@@ -151,6 +152,8 @@ def game_intro():
         screen.blit(game2, game2_rect)
         screen.blit(autor_textSurfaceObj, autor_textRectObj)
         screen.blit(nazov_surface, nazov_rect)
+
         pygame.display.update()
+        clock.tick(60)
 
 game_intro()

@@ -7,7 +7,7 @@ class Mascot_animation:
         self.starting_coors = coors
         self.actual_coors = self.starting_coors
         self.max_off = 180
-        self.speed = 5
+        self.speed = 10
 
     def position(self):
         new_x, new_y = self.actual_coors
