@@ -199,5 +199,6 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
             elif event.type == MOUSEBUTTONDOWN:
                 mouse_coor = event.pos
                 mouse_clicked = True
+                
         pg.display.update()
         clock.tick(60)

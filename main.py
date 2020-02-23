@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import sys
 import random
+import time
 from krokovanie.zajo_main import zajo_main_func
 from zabky.zabky_main import zabky_main_func
 from files.window import Consts_window
@@ -37,13 +38,14 @@ def game_intro():
     grass_rect.bottom = 768 if screen_type == 1 else 700
     #------CESTA
     road = pygame.image.load('resources/road3.png')
-    road_down = pygame.transform.rotozoom(road, 8, 1)
-    road_down = pygame.transform.flip(road_down, True, True)
+    road_down = road.copy()
+    #road_down = pygame.transform.rotozoom(road, 8, 1)
+    #road_down = pygame.transform.flip(road_down, True, True)
     road_middle = pygame.transform.flip(road, True, False)
 
     #------PRVY DOMCEK
     game1 = pygame.image.load('resources/home_left_free.png')
-    game1 = pygame.transform.flip(game1, True, False)
+    #game1 = pygame.transform.flip(game1, True, False)
     game1_maskot = pygame.image.load('krokovanie/resources/bunny.png')
     game1_rect = game1.get_rect()
     x1 = 10
@@ -135,6 +137,9 @@ def game_intro():
                 elif game2_rect.collidepoint(mouse_coors):
                     #-----START ZABKY
                     zabky_main_func(pygame, screen)
+                elif game3_rect.collidepoint(mouse_coors):
+                    pygame.quit()
+                    sys.exit()
 
         screen.blit(grass, grass_rect)
 
