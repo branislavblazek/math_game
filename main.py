@@ -39,17 +39,18 @@ def game_intro():
     #------CESTA
     road = pygame.image.load('resources/road3.png')
     road_down = road.copy()
-    #road_down = pygame.transform.rotozoom(road, 8, 1)
-    #road_down = pygame.transform.flip(road_down, True, True)
+    road_down = pygame.transform.rotozoom(road, 8, 1)
+    road_down = pygame.transform.flip(road_down, True, True)
     road_middle = pygame.transform.flip(road, True, False)
 
     #------PRVY DOMCEK
     game1 = pygame.image.load('resources/home_left_free.png')
-    #game1 = pygame.transform.flip(game1, True, False)
+    game1 = pygame.transform.flip(game1, True, False)
     game1_maskot = pygame.image.load('krokovanie/resources/bunny.png')
     game1_rect = game1.get_rect()
     x1 = 10
     x2 = 410
+
     if screen_type == 1:
         #game1 = pygame.transform.scale(game1, (500,287))
         game1_maskot_obj = files.intro_obj.Mascot_animation((x1 + 215,x2 + 30))
