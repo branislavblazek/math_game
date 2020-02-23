@@ -138,10 +138,7 @@ def game_intro():
                 elif game2_rect.collidepoint(mouse_coors):
                     #-----START ZABKY
                     zabky_main_func(pygame, screen)
-                elif game3_rect.collidepoint(mouse_coors):
-                    pygame.quit()
-                    sys.exit()
-
+                    
         screen.blit(grass, grass_rect)
 
         if screen_type == 1:
