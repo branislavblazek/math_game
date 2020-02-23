@@ -59,6 +59,8 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
     frog_help_rect = frog_help.get_rect()
     #--------TEXT
     intro_text, intro_rect = level.generate_text(const['window'].WIDTH, const['color'].BLACK)
+    intro_text_shade, intro_text_shade_rect =  level.generate_text(const['window'].WIDTH, const['color'].WHITE)
+    intro_text_shade_rect.left -= 4
     #------------MAIN LOOP
     while True:
         #---------PLACE IMAGES
@@ -66,6 +68,7 @@ def zabky_level(pg, screen, level_status, level_max, left_side, right_side):
         screen.blit(images['farm'], (0,0))
 
         #set text
+        screen.blit(intro_text_shade, intro_text_shade_rect)
         screen.blit(intro_text, intro_rect)
 
         #set log end
