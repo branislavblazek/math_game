@@ -3,8 +3,11 @@ from pygame.locals import *
 import sys
 import random
 import time
+
 from krokovanie.zajo_main import zajo_main_func
 from zabky.zabky_main import zabky_main_func
+from opicky.opicky_main import opicky_main_func
+
 from files.window import Consts_window
 from files.colors import Consts_colors
 import files.intro_obj
@@ -69,6 +72,7 @@ def game_intro():
     game2_maskot = pygame.image.load('zabky/resources/frog4.png')
     x1 = 480
     x2 = 190
+
     if screen_type == 1:
         game2_maskot_obj = files.intro_obj.Mascot_animation((x1 + 210, x2 + 60))
         game2_maskot_obj.max_off = 130
@@ -83,13 +87,23 @@ def game_intro():
         game2_rect.topleft = (520, 190)
 
     #-----TRETI DOMCEK
-    game3 = pygame.image.load('resources/home2.png')
+    game3 = pygame.image.load('resources/home.png')
+    game3 = pygame.transform.flip(game3, True, False)
+    game3_maskot = pygame.image.load('opicky/resources/monkey_home.png')
+    game3_maskot = pygame.transform.rotozoom(game3_maskot, -44, 1)
     game3_rect = game3.get_rect()
-    game3_rect.topleft = (-100, 10)
-    if screen_type == 2:
+    x1 = -100
+    x2 = 10
+    game3_rect.topleft = (x1, x2)
+
+    if screen_type == 1:
+        game3_maskot_obj = files.intro_obj.Mascot_animation((x1 + 300, x2 + 42), True)
+        game3_maskot_obj.max_off = 100
+    elif screen_type == 2:
         game3 = pygame.transform.scale(game3, (450,258))
         game3_rect = game3.get_rect()
         game3_rect.topleft = (10, 20)
+        game3_maskot_obj = files.intro_obj.Mascot_animation((x1, x2))
 
     #-----AUTORI
     autor_textObj = pygame.font.SysFont('verdana', 16)
@@ -121,6 +135,7 @@ def game_intro():
                     game1_maskot_obj.is_showing = False
                     game1_maskot_obj.is_showed = False
                     game1_maskot_obj.is_hiding = True
+
                 if game2_rect.collidepoint(mouse_coors):
                     game2_maskot_obj.is_showing = True
                     game2_maskot_obj.is_hiding = False
@@ -129,6 +144,16 @@ def game_intro():
                     game2_maskot_obj.is_showing = False
                     game2_maskot_obj.is_showed = False
                     game2_maskot_obj.is_hiding = True
+
+                if game3_rect.collidepoint(mouse_coors):
+                    game3_maskot_obj.is_showing = True
+                    game3_maskot_obj.is_hiding = False
+                    game3_maskot_obj.is_hided = False
+                else:
+                    game3_maskot_obj.is_showing = False
+                    game3_maskot_obj.is_showed = False
+                    game3_maskot_obj.is_hiding = True
+                    
             #-----CLICK EVENT
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_coors = event.pos
@@ -138,6 +163,9 @@ def game_intro():
                 elif game2_rect.collidepoint(mouse_coors):
                     #-----START ZABKY
                     zabky_main_func(pygame, screen)
+                elif game3_rect.collidepoint(mouse_coors):
+                    #-----START OPICKY
+                    opicky_main_func(pygame, screen)
                     
         screen.blit(grass, grass_rect)
 
@@ -148,6 +176,7 @@ def game_intro():
             screen.blit(road_down, (140,400))
             screen.blit(road_middle, (130,190))
 
+        screen.blit(game3_maskot, game3_maskot_obj.position())
         screen.blit(game3, game3_rect)
         screen.blit(game1_maskot, game1_maskot_obj.position())
         screen.blit(game1, game1_rect)
