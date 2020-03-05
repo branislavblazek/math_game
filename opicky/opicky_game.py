@@ -1,4 +1,4 @@
-from opicky.main_obj import Level
+from opicky.main_obj import Level, Point
 from pygame.locals import *
 import sys
 
@@ -47,8 +47,66 @@ def opicky_level(pg, screen, level_status, level_max):
     #frog_help = images['help_frog']
     #frog_help_rect = frog_help.get_rect()
 
+    #vrcholy
+    #   B C D E
+    # A         J
+    #   F G H I
+    vrcholy = {}
+
+    #table
+    normal_width = pg.display.Info().current_w
+    normal_height = pg.display.Info().current_h
+    left = (normal_width - level.table_width) * 0.5
+    top = (normal_height - level.table_height) * 0.75
+
+    #pg.draw.rect(screen, const['color'].RED, (left, top, level.table_width, level.table_height), 8)
+
+    pomocne_coord = []
+    pomocne_names = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+    susedia = (
+        ['A', 'B', 'F'],
+        ['B', 'A', 'F', 'G', 'C'],
+        ['C', 'B', 'F', 'G', 'H', 'D'],
+        ['D', 'C', 'G', 'H', 'I', 'E'],
+        ['E', 'D', 'H', 'I', 'J'],
+        ['F', 'A', 'B', 'C', 'G'],
+        ['G', 'F', 'B', 'C', 'D', 'H'],
+        ['H', 'G', 'C', 'D', 'E', 'I'],
+        ['I', 'H', 'D', 'E', 'J'],
+        ['J', 'E', 'I']
+    )
+    #main points
+    for y in range(2):
+        for x in range(4):
+            pomocne_coord.append((left+level.point_rest/2+level.point_full_size*x, top+level.point_rest/2+level.point_full_size*y))
+
+    for index, name in enumerate(pomocne_names):
+        vrcholy[name] = Point(pomocne_coord[index])
+        vrcholy[name].image = [images['point'], images['point2']]
+        vrcholy[name].make_rect()
+
+    #start point
+    left_s = ((left+level.point_rest/2) - level.point_size) / 2
+    top = top + (level.table_height - level.point_size) / 2
+    vrcholy['A'] = Point((left_s, top))
+    vrcholy['A'].image = [images['point'], images['point2']]
+    vrcholy['A'].make_rect()
+    #end point
+    left_e = normal_width - left_s - level.point_size
+    vrcholy['J'] = Point((left_e, top))
+    vrcholy['J'].image = [images['point'], images['point2']]
+    vrcholy['J'].make_rect()
+    #neighbours
+    for sused in susedia:
+        vrcholy[sused[0]].neig = sused[1:]
+
     #-------MAIN LOOP
     while True:
+        #check for correct image:
+        for vrchol in level.vertex_path:
+            if vrcholy[vrchol].type != 2:
+                vrcholy[vrchol].type = 2
+
         #PLACE SOME IMAGES
         #backgorund image
         screen.blit(images['jungle'], (0,0))
@@ -85,6 +143,10 @@ def opicky_level(pg, screen, level_status, level_max):
             else:
                 screen.blit(images['banana_null'], (star * 80 + 20, 25))
 
+        #vrcholy:
+        for vrchol in vrcholy.items():
+            screen.blit(*vrchol[1].coords)
+
         #MOUSE ACTIONS
         #over home button
         if surface_home_rect.collidepoint(mouse_coor):
@@ -102,6 +164,17 @@ def opicky_level(pg, screen, level_status, level_max):
         else:
             if level.act_pos[0] < level.start_pos[0]:
                 level.act_pos[0] += 6
+            
+        #clicked on of the vertex
+        if mouse_clicked and mouse_coor != (0,0):
+            for vrchol in vrcholy.items():
+                if vrchol[1].rect.collidepoint(mouse_coor):
+                    mouse_clicked = False
+                    if vrchol[0] in vrcholy[level.vertex_active].neig and vrchol[0] not in level.vertex_path:
+                        level.vertex_active = vrchol[0] 
+                        level.vertex_path.append(level.vertex_active)
+                        print(level.vertex_path)
+                    break
 
         for event in pg.event.get():
             if event.type == QUIT:
