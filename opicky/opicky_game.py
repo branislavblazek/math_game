@@ -1,4 +1,4 @@
-from opicky.main_obj import Level, Point
+from opicky.main_obj import Level, Point, Win, Lose
 from pygame.locals import *
 import sys
 
@@ -22,6 +22,9 @@ def opicky_level(pg, screen, level_status, level_max):
     images = level.load_images()
     #exit
     exit_code = -1
+    #animations
+    win_animacia = Win(pg, screen)
+    lose_animacia = Lose(pg, screen)
     #-------HOME BUTTON
     images['back_rect'].topleft = (0,pg.display.Info().current_h-images['back'].get_height())
 
@@ -100,14 +103,36 @@ def opicky_level(pg, screen, level_status, level_max):
     for sused in susedia:
         vrcholy[sused[0]].neig = sused[1:]
 
+    #set in level
+    level.vrcholy = vrcholy
+
+    coors_lana = level.create_lana()
+
     #-------MAIN LOOP
     while True:
+        #<CHECKING>
         #check for correct image:
         for vrchol in level.vertex_path:
             if vrcholy[vrchol].type != 2:
                 vrcholy[vrchol].type = 2
 
-        #PLACE SOME IMAGES
+        #check last element
+        if level.vertex_path[-1] == 'J':
+            print('[~113]The end has come!')
+            exit_code = 1
+
+        #check for free neighbours
+        pocet = 0
+        for sused in vrcholy[level.vertex_active].neig:
+            if vrcholy[sused].type == 1:
+                pocet += 1
+        if pocet == 0:
+            print('There is no way!')
+            exit_code = 0
+
+        #</CHECKING>
+
+        #<PLACE SOME IMAGES>
         #backgorund image
         screen.blit(images['jungle'], (0,0))
 
@@ -119,7 +144,7 @@ def opicky_level(pg, screen, level_status, level_max):
         screen.blit(surface_home, surface_home_rect)
         screen.blit(images['back'], images['back_rect'])   
 
-        #HELPING
+        #helping
             #rect
         surface_help_rect[0] = level.act_pos[0]
         surface_help_rect[1] = level.act_pos[1]
@@ -147,7 +172,16 @@ def opicky_level(pg, screen, level_status, level_max):
         for vrchol in vrcholy.items():
             screen.blit(*vrchol[1].coords)
 
-        #MOUSE ACTIONS
+        #lana
+        test = images['lano'].copy()
+        test = pg.transform.rotozoom(test, -45, 1)
+        screen.blit(test, (vrcholy['B'].coords[1][0], vrcholy['B'].coords[1][1]))
+
+        #opicka:
+        screen.blit(images['monkey'], level.monkey_coords())
+        #</IMAGES PLACING>
+
+        #<MOUSE ACTIONS>
         #over home button
         if surface_home_rect.collidepoint(mouse_coor):
             surface_home.fill(const['color'].YELLOW)
@@ -175,6 +209,24 @@ def opicky_level(pg, screen, level_status, level_max):
                         level.vertex_path.append(level.vertex_active)
                         print(level.vertex_path)
                     break
+        #</MOUSE ACTIONS>
+
+        #exiting
+        if exit_code == 1 or exit_code == 0:
+            can_return = True
+            #for frog in frogs:
+            #    if frog.is_jumping:
+            #        can_return = False
+
+            if can_return:
+                if exit_code == 1:
+                    win_animacia.animate()
+                    if not win_animacia.is_animating:
+                        return exit_code
+                else:
+                    lose_animacia.animate()
+                    if not lose_animacia.is_animating:
+                        return exit_code
 
         for event in pg.event.get():
             if event.type == QUIT:
