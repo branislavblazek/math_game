@@ -25,6 +25,11 @@ def opicky_level(pg, screen, level_status, level_max):
     #animations
     win_animacia = Win(pg, screen)
     lose_animacia = Lose(pg, screen)
+    #--------TEXT
+    intro_text, intro_rect = level.generate_text(const['window'].WIDTH, const['color'].BLACK)
+    intro_text_shade, intro_text_shade_rect =  level.generate_text(const['window'].WIDTH, const['color'].WHITE)
+    intro_text_shade_rect.left -= 4
+
     #-------HOME BUTTON
     images['back_rect'].topleft = (0,pg.display.Info().current_h-images['back'].get_height())
 
@@ -117,6 +122,9 @@ def opicky_level(pg, screen, level_status, level_max):
 
     #set in level
     level.vrcholy = vrcholy
+    a_coors = level.vrcholy['A'].left-20, level.vrcholy['A'].top-40
+    e_coors = level.vrcholy['E'].left-10, level.vrcholy['E'].top-20
+    i_coors = level.vrcholy['I'].left-20, level.vrcholy['I'].top-150
 
     #lana
     coors_lana = level.create_lana()
@@ -125,9 +133,12 @@ def opicky_level(pg, screen, level_status, level_max):
         'type1': backup,
         'type2': pg.transform.rotozoom(backup, 90, 1),
         'type3': pg.transform.rotozoom(backup, -45, 1),
-        'type4': pg.transform.rotozoom(backup, -135, 1)
+        'type4': pg.transform.rotozoom(backup, -135, 1),
+        'type5': pg.transform.scale(backup, (200, 158))
     }
-    print(coors_lana)
+    lana_images['type5'] = pg.transform.rotozoom(lana_images['type5'], -40, 1)
+    lana_images['type5_flip'] = pg.transform.flip(lana_images['type5'], False, True)
+    lana_images['type6'] = pg.transform.rotozoom(lana_images['type5'], 80, 1)
 
     #-------MAIN LOOP
     while True:
@@ -157,6 +168,10 @@ def opicky_level(pg, screen, level_status, level_max):
         #backgorund image
         screen.blit(images['jungle'], (0,0))
 
+        #set text
+        screen.blit(intro_text_shade, intro_text_shade_rect)
+        screen.blit(intro_text, intro_rect)
+        
         #home
         surface_home_rect[0] = pg.display.Info().current_w - images['back'].get_width()
         surface_home_rect[1] = pg.display.Info().current_h - images['back'].get_height()
@@ -204,12 +219,18 @@ def opicky_level(pg, screen, level_status, level_max):
                 for coor in types[1]:
                     screen.blit(lana_images[types[0]], (coor[0], coor[1]-15))
 
+        screen.blit(lana_images['type5'], a_coors)
+        screen.blit(lana_images['type5_flip'], (a_coors[0], a_coors[1]-80))
+        screen.blit(lana_images['type5'], e_coors)
+        screen.blit(lana_images['type6'], i_coors)
+
         #vrcholy:
         for vrchol in vrcholy.items():
             screen.blit(*vrchol[1].coords)
 
         #opicka:
         screen.blit(images['monkey'], level.monkey_coords())
+
         #</IMAGES PLACING>
 
         #<MOUSE ACTIONS>

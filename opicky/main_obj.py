@@ -105,6 +105,14 @@ class Level:
         top -= self.monkey_height // 2 + 60
         return left, top
 
+    def generate_text(self, width, color):
+        intro_textObj = self.pg.font.SysFont('impact', 46)
+        intro_textSurfaceObj = intro_textObj.render('Nejaký text čo pomôže dieťaťu pochopiť hru.', True, color)
+        intro_textRectObj = intro_textSurfaceObj.get_rect()
+        intro_textRectObj.center = (width//2, 150)
+
+        return intro_textSurfaceObj, intro_textRectObj
+
 class Point:
     def __init__(self, xy):
         self.top = xy[1]
