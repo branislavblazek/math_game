@@ -66,7 +66,7 @@ def opicky_level(pg, screen, level_status, level_max):
 
     pomocne_coord = []
     pomocne_names = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
-    susedia = (
+    susedia_full = (
         ['A', 'B', 'F'],
         ['B', 'A', 'F', 'G', 'C'],
         ['C', 'B', 'F', 'G', 'H', 'D'],
@@ -75,6 +75,18 @@ def opicky_level(pg, screen, level_status, level_max):
         ['F', 'A', 'B', 'C', 'G'],
         ['G', 'F', 'B', 'C', 'D', 'H'],
         ['H', 'G', 'C', 'D', 'E', 'I'],
+        ['I', 'H', 'D', 'E', 'J'],
+        ['J', 'E', 'I']
+    )
+    susedia = (
+        ['A', 'B', 'F'],
+        ['B', 'A', 'G', 'C'],
+        ['C', 'B', 'F', 'H'],
+        ['D', 'H', 'I'],
+        ['E', 'I', 'J'],
+        ['F', 'A', 'C'],
+        ['G', 'B', 'H'],
+        ['H', 'G', 'C', 'D', 'I'],
         ['I', 'H', 'D', 'E', 'J'],
         ['J', 'E', 'I']
     )
@@ -106,7 +118,16 @@ def opicky_level(pg, screen, level_status, level_max):
     #set in level
     level.vrcholy = vrcholy
 
+    #lana
     coors_lana = level.create_lana()
+    backup = images['lano'].copy()
+    lana_images = {
+        'type1': backup,
+        'type2': pg.transform.rotozoom(backup, 90, 1),
+        'type3': pg.transform.rotozoom(backup, -45, 1),
+        'type4': pg.transform.rotozoom(backup, -135, 1)
+    }
+    print(coors_lana)
 
     #-------MAIN LOOP
     while True:
@@ -168,14 +189,24 @@ def opicky_level(pg, screen, level_status, level_max):
             else:
                 screen.blit(images['banana_null'], (star * 80 + 20, 25))
 
+        #lana
+        for types in coors_lana.items():
+            if types[0] == 'type1':
+                for coor in types[1]:
+                    screen.blit(lana_images[types[0]], (coor[0]+5, coor[1]-30))
+            elif types[0] == 'type2':
+                for coor in types[1]:
+                    screen.blit(lana_images[types[0]], (coor[0]-30, coor[1]+5))
+            elif types[0] == 'type3':
+                for coor in types[1]:
+                    screen.blit(lana_images[types[0]], (coor[0], coor[1]))
+            elif types[0] == 'type4':
+                for coor in types[1]:
+                    screen.blit(lana_images[types[0]], (coor[0], coor[1]-15))
+
         #vrcholy:
         for vrchol in vrcholy.items():
             screen.blit(*vrchol[1].coords)
-
-        #lana
-        test = images['lano'].copy()
-        test = pg.transform.rotozoom(test, -45, 1)
-        screen.blit(test, (vrcholy['B'].coords[1][0], vrcholy['B'].coords[1][1]))
 
         #opicka:
         screen.blit(images['monkey'], level.monkey_coords())

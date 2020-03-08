@@ -59,13 +59,43 @@ class Level:
             'type4': []
         }
 
-        main_vrcholy = self.vrcholy.copy()
-        del main_vrcholy['A']
-        del main_vrcholy['J']
+        for vrchol in self.vrcholy.items():
+            if vrchol[0] == 'A' or vrchol[0] == 'J':
+                continue
+            
+            x1 = vrchol[1].coords[1][0]
+            y1 = vrchol[1].coords[1][1]
 
-        for vrchol in main_vrcholy.items():
-            #vrchol[0] - oznacenie, vrchol[1] - objekt
-            print(vrchol)
+            #print(vrchol[0])
+            susedia = vrchol[1].neig
+            for sused in susedia:
+                if sused == 'A' or sused == 'J':
+                    continue
+
+                if vrchol[1].is_connected_with(sused):
+                    continue
+                else:
+                    #1. zisti polohu
+                    #print(sused, self.vrcholy[sused].coords[1])
+                    x2 = self.vrcholy[sused].coords[1][0]
+                    y2 = self.vrcholy[sused].coords[1][1]
+
+                    if y1 == y2:
+                        polohy['type1'].append((x1, y1))
+                        #print(sused, 'vodorovne')
+                    elif x1 == x2:
+                        polohy['type2'].append((x1, y1))
+                        #print(sused, 'vertikalne')
+                    elif x1 < x2:
+                        polohy['type3'].append((x1, y1))
+                        #print(sused, 'diagonala dole')
+                    elif x1 > x2:
+                        polohy['type4'].append((x1 - (x1 - x2), y1))
+                        #print('diagonala hore')
+                    #2. pridaj do zoznamu
+                    #print('pridavam' + sused)
+                    vrchol[1].connected_with.add(sused)
+                    self.vrcholy[sused].connected_with.add(vrchol[0])
 
         return polohy
 
@@ -86,6 +116,7 @@ class Point:
         self.rect = None
         self.neig = None
         self.type = 1
+        self.connected_with = set()
 
     @property
     def coords(self):
@@ -94,6 +125,12 @@ class Point:
     def make_rect(self):
         self.rect = self.image[self.type-1].get_rect()
         self.rect.topleft = (self.left, self.top)
+
+    def is_connected_with(self, pointB):
+        if pointB in self.connected_with:
+            return True
+        else:
+            return False
 
 class Win:
     def __init__(self, pg, screen):
