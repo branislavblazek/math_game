@@ -25,7 +25,7 @@ class Level:
         anim = files.animation_images.Get_images(self.pg)
         path = 'opicky/resources/'
         images = {
-            "jungle": self.pg.image.load(path + 'jungle.png'),
+            "jungle": self.pg.image.load(path + 'jungle_blue.png'),
             "back": anim.back,
             "q_mark": anim.q_mark,
             "banana_full": self.pg.image.load(path + 'banana2.png'),
@@ -66,7 +66,8 @@ class Level:
             x1 = vrchol[1].coords[1][0]
             y1 = vrchol[1].coords[1][1]
 
-            #print(vrchol[0])
+            print(vrchol[0], vrchol[1].neig)
+            
             susedia = vrchol[1].neig
             for sused in susedia:
                 if sused == 'A' or sused == 'J':
@@ -107,9 +108,9 @@ class Level:
 
     def generate_text(self, width, color):
         intro_textObj = self.pg.font.SysFont('impact', 46)
-        intro_textSurfaceObj = intro_textObj.render('Nejaký text čo pomôže dieťaťu pochopiť hru.', True, color)
+        intro_textSurfaceObj = intro_textObj.render('Nájdi cestu s najmenším súčtom čísel.', True, color)
         intro_textRectObj = intro_textSurfaceObj.get_rect()
-        intro_textRectObj.center = (width//2, 150)
+        intro_textRectObj.center = (width//2, 160)
 
         return intro_textSurfaceObj, intro_textRectObj
 
@@ -125,6 +126,7 @@ class Point:
         self.neig = None
         self.type = 1
         self.connected_with = set()
+        self.value = -1
 
     @property
     def coords(self):
@@ -139,6 +141,9 @@ class Point:
             return True
         else:
             return False
+
+    def generate_number(self):
+        return self.value, self.rect.center
 
 class Win:
     def __init__(self, pg, screen):

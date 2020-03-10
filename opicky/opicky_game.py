@@ -1,6 +1,7 @@
 from opicky.main_obj import Level, Point, Win, Lose
 from pygame.locals import *
 import sys
+import random
 
 #import from sibling folder
 sys.path.insert(0, "..")
@@ -83,18 +84,36 @@ def opicky_level(pg, screen, level_status, level_max):
         ['I', 'H', 'D', 'E', 'J'],
         ['J', 'E', 'I']
     )
-    susedia = (
-        ['A', 'B', 'F'],
-        ['B', 'A', 'G', 'C'],
-        ['C', 'B', 'F', 'H'],
-        ['D', 'H', 'I'],
-        ['E', 'I', 'J'],
-        ['F', 'A', 'C'],
-        ['G', 'B', 'H'],
-        ['H', 'G', 'C', 'D', 'I'],
-        ['I', 'H', 'D', 'E', 'J'],
-        ['J', 'E', 'I']
+    connections = (
+        'A B', 'A F',
+        'B G', 'B C',
+        'C F', 'C H',
+        'D H', 'D I',
+        'E I', 'E J',
+        'G H',
+        'H I',
+        'I J'
     )
+    susedia = []
+    for connection in connections:
+        start, to = connection.split(' ')
+
+        pridajA = True
+        pridajB = True
+
+        for item in susedia:
+            if item[0] == start:
+                pridajA = False
+                item.append(to)
+            if item[0] == to:
+                pridajB = False
+                item.append(start)
+
+        if pridajA:
+            susedia.append([start, to])
+        if pridajB:
+            susedia.append([to, start])
+
     #main points
     for y in range(2):
         for x in range(4):
@@ -104,6 +123,8 @@ def opicky_level(pg, screen, level_status, level_max):
         vrcholy[name] = Point(pomocne_coord[index])
         vrcholy[name].image = [images['point'], images['point2']]
         vrcholy[name].make_rect()
+        cislo = random.randint(2, 12)
+        vrcholy[name].value = cislo
 
     #start point
     left_s = ((left+level.point_rest/2) - level.point_size) / 2
@@ -139,6 +160,19 @@ def opicky_level(pg, screen, level_status, level_max):
     lana_images['type5'] = pg.transform.rotozoom(lana_images['type5'], -40, 1)
     lana_images['type5_flip'] = pg.transform.flip(lana_images['type5'], False, True)
     lana_images['type6'] = pg.transform.rotozoom(lana_images['type5'], 80, 1)
+
+    #cisla
+    cisla_obj = []
+    for name, obj in vrcholy.items():
+        if name == 'A' or name == 'J':
+            continue 
+        value, coors = obj.generate_number()
+        intro_textObj = pg.font.SysFont('impact', 50)
+        intro_textSurfaceObj = intro_textObj.render(str(value), True, const['color'].RED)
+        intro_textRectObj = intro_textSurfaceObj.get_rect()
+        intro_textRectObj.center = coors
+
+        cisla_obj.append([intro_textSurfaceObj, intro_textRectObj])
 
     #-------MAIN LOOP
     while True:
@@ -227,6 +261,10 @@ def opicky_level(pg, screen, level_status, level_max):
         #vrcholy:
         for vrchol in vrcholy.items():
             screen.blit(*vrchol[1].coords)
+
+        #cisla:
+        for a, b in cisla_obj:
+            screen.blit(a, b)
 
         #opicka:
         screen.blit(images['monkey'], level.monkey_coords())
