@@ -72,6 +72,7 @@ def opicky_level(pg, screen, level_status, level_max):
 
     pomocne_coord = []
     pomocne_names = ['B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+    #toto susedia_full je nepotrebne
     susedia_full = (
         ['A', 'B', 'F'],
         ['B', 'A', 'F', 'G', 'C'],
@@ -125,6 +126,32 @@ def opicky_level(pg, screen, level_status, level_max):
         vrcholy[name].make_rect()
         cislo = random.randint(2, 12)
         vrcholy[name].value = cislo
+
+    #edit susedia to use for dijkstra alg
+    graf = [ [] for i in range(10)]
+
+    for sused in susedia:
+        zaciatocny = sused[0]
+        vedla_neho = sused[1:]
+        indexy_vedla = []
+        for vedla in vedla_neho:
+            hodnota = []
+            cislo = ord(vedla) - 65
+            #nastav kam to ide
+            hodnota.append(cislo)
+            #nastav hodnotu
+            if cislo == 0 or cislo == 9:
+                value = 0
+            else:
+                value = vrcholy[chr(cislo+65)].value
+
+            hodnota.append(value)
+            indexy_vedla.append(hodnota)
+
+        graf[ord(zaciatocny)-65] = indexy_vedla
+
+    level.correct_ans = level.dijkstra(graf, [0,0], [9,0])
+    print(level.correct_ans)
 
     #start point
     left_s = ((left+level.point_rest/2) - level.point_size) / 2
@@ -184,8 +211,10 @@ def opicky_level(pg, screen, level_status, level_max):
 
         #check last element
         if level.vertex_path[-1] == 'J':
-            print('[~113]The end has come!')
-            exit_code = 1
+            if level.act_value == level.correct_ans:
+                exit_code = 1
+            else:
+                exit_code = 0
 
         #check for free neighbours
         pocet = 0
@@ -193,8 +222,10 @@ def opicky_level(pg, screen, level_status, level_max):
             if vrcholy[sused].type == 1:
                 pocet += 1
         if pocet == 0:
-            print('There is no way!')
-            exit_code = 0
+            if level.act_value == level.correct_ans:
+                exit_code = 1
+            else:
+                exit_code = 0
 
         #</CHECKING>
 
@@ -297,7 +328,9 @@ def opicky_level(pg, screen, level_status, level_max):
                     if vrchol[0] in vrcholy[level.vertex_active].neig and vrchol[0] not in level.vertex_path:
                         level.vertex_active = vrchol[0] 
                         level.vertex_path.append(level.vertex_active)
-                        print(level.vertex_path)
+                        level.act_value += vrchol[1].value
+                        print(vrchol[1].value)
+                        print(level.act_value)
                     break
         #</MOUSE ACTIONS>
 

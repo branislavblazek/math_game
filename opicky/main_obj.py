@@ -1,3 +1,4 @@
+import heapq
 import files
 
 class Level:
@@ -20,6 +21,9 @@ class Level:
         #for monkey
         self.monkey_width = 150
         self.monkey_height = 190
+        #for path
+        self.correct_ans = -1
+        self.act_value = 0
 
     def load_images(self):
         anim = files.animation_images.Get_images(self.pg)
@@ -65,8 +69,6 @@ class Level:
             
             x1 = vrchol[1].coords[1][0]
             y1 = vrchol[1].coords[1][1]
-
-            print(vrchol[0], vrchol[1].neig)
             
             susedia = vrchol[1].neig
             for sused in susedia:
@@ -114,6 +116,32 @@ class Level:
 
         return intro_textSurfaceObj, intro_textRectObj
 
+    def dijkstra(self, graf, zac, kon):
+        heap = []
+        navs = [-1] * len(graf)
+        
+        heapq.heappush(heap, (0, zac))
+        
+        while heap:
+            x = heapq.heappop(heap)
+
+            vzdial = x[0]
+            vrchol = x[1][0]
+            
+            if(navs[vrchol] != -1):
+                continue
+            
+            navs[vrchol] = vzdial
+                
+            for i in range(0, len(graf[vrchol])):
+                novy_vrchol = graf[vrchol][i]
+                
+                if(navs[novy_vrchol[0]] == -1):
+                    z = (vzdial+graf[vrchol][i][1], novy_vrchol)
+                    heapq.heappush(heap, z)
+
+        return navs[kon[0]]
+
 class Point:
     def __init__(self, xy):
         self.top = xy[1]
@@ -126,7 +154,7 @@ class Point:
         self.neig = None
         self.type = 1
         self.connected_with = set()
-        self.value = -1
+        self.value = 0
 
     @property
     def coords(self):

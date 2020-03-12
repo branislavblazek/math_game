@@ -1,31 +1,59 @@
-connections = (
-        'A B', 'A F',
-        'B G', 'B C',
-        'C F', 'C H',
-        'D H', 'D I',
-        'E I', 'E J',
-        'G H',
-        'H I',
-        'I J'
-)
-susedia = []
-for connection in connections:
-    start, to = connection.split(' ')
+import heapq
 
-    pridajA = True
-    pridajB = True
+def dijkstra(graf, zac, kon):
+    heap = []
+    navs = [-1] * len(graf)
+    
+    heapq.heappush(heap, (0, zac))
+    
+    while heap:
+        x = heapq.heappop(heap)
 
-    for item in susedia:
-        if item[0] == start:
-            pridajA = False
-            item.append(to)
-        if item[0] == to:
-            pridajB = False
-            item.append(start)
+        vzdial = x[0]
+        vrchol = x[1][0]
+        
+        if(navs[vrchol] != -1):
+            continue
+        
+        navs[vrchol] = vzdial
+            
+        for i in range(0, len(graf[vrchol])):
+            novy_vrchol = graf[vrchol][i]
+            
+            if(navs[novy_vrchol[0]] == -1):
+                z = (vzdial+graf[vrchol][i][1], novy_vrchol)
+                heapq.heappush(heap, z)
 
-    if pridajA:
-        susedia.append([start, to])
-    if pridajB:
-        susedia.append([to, start])
+    return navs[kon[0]]
 
-print(susedia)
+################################################################################
+
+n, m = input().split()
+n = int(n)
+m = int(m)
+    
+graf = [ [] for i in range(n) ]
+vahy = [ [] for i in range(n) ]
+
+for i in range(m):
+    a, b, w = input().split()
+    a = int(a)
+    b = int(b)
+    w = int(w)
+    
+    a -= 1
+    b -= 1
+    
+    graf[a].append([b, w])
+    graf[b].append([a, w])
+
+zac, kon = input().split()
+zac = int(zac)
+kon = int(kon)
+
+zac -= 1
+kon -= 1
+
+print(graf)
+
+print(dijkstra(graf, [zac,0], [kon,0]))
