@@ -6,7 +6,7 @@ class Level:
         self.pg = pygame
         #for help:
         self.start_pos = [0,0]
-        self.max_off = 200
+        self.max_off = 350
         self.act_pos = self.start_pos
         #for points
         self.point_size = 100
@@ -108,11 +108,11 @@ class Level:
         top -= self.monkey_height // 2 + 60
         return left, top
 
-    def generate_text(self, width, color):
+    def generate_text(self, text, top, width, color):
         intro_textObj = self.pg.font.SysFont('impact', 46)
-        intro_textSurfaceObj = intro_textObj.render('Nájdi cestu s najmenším súčtom čísel.', True, color)
+        intro_textSurfaceObj = intro_textObj.render(text, True, color)
         intro_textRectObj = intro_textSurfaceObj.get_rect()
-        intro_textRectObj.center = (width//2, 160)
+        intro_textRectObj.center = (width//2, top)
 
         return intro_textSurfaceObj, intro_textRectObj
 

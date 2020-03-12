@@ -27,9 +27,13 @@ def opicky_level(pg, screen, level_status, level_max):
     win_animacia = Win(pg, screen)
     lose_animacia = Lose(pg, screen)
     #--------TEXT
-    intro_text, intro_rect = level.generate_text(const['window'].WIDTH, const['color'].BLACK)
-    intro_text_shade, intro_text_shade_rect =  level.generate_text(const['window'].WIDTH, const['color'].WHITE)
+    intro_text, intro_rect = level.generate_text('Nájdi cestu s najmenším súčtom čísel.', 160, const['window'].WIDTH, const['color'].BLACK)
+    intro_text_shade, intro_text_shade_rect = level.generate_text('Nájdi cestu s najmenším súčtom čísel.', 160,const['window'].WIDTH, const['color'].WHITE)
     intro_text_shade_rect.left -= 4
+
+    intro_text2, intro_rect2 = level.generate_text('Na skočené vrcholy nemôžeš skočiť znova!', 220, const['window'].WIDTH, const['color'].BLACK)
+    intro_text_shade2, intro_text_shade_rect2 =  level.generate_text('Na skočené vrcholy nemôžeš skočiť znova!', 220, const['window'].WIDTH, const['color'].WHITE)
+    intro_text_shade_rect2.left -= 4
 
     #-------HOME BUTTON
     images['back_rect'].topleft = (0,pg.display.Info().current_h-images['back'].get_height())
@@ -43,18 +47,14 @@ def opicky_level(pg, screen, level_status, level_max):
     level.start_pos = [const['window'].WIDTH-images['q_mark'].get_width(), 0]
     level.act_pos = level.start_pos.copy()
 
-    surface_help = pg.Surface((300,images['q_mark'].get_height()))
+    surface_help = pg.Surface((600,images['q_mark'].get_height()))
     surface_help.set_alpha(128)
     surface_help.fill((0, 149, 255))
     surface_help_rect = surface_help.get_rect()
 
     text_help_font = pg.font.Font('freesansbold.ttf', 32)
-    medzera = "         " if 9 < 10 else "       "
-    text_help_surface = text_help_font.render(str(9) + ' =' + medzera +  '+       ', True, const['color'].BLACK)
+    text_help_surface = text_help_font.render("Zatiaľ získaných: " + str(level.act_value), True, const['color'].BLACK)
     text_help_rect = text_help_surface.get_rect()
-
-    #frog_help = images['help_frog']
-    #frog_help_rect = frog_help.get_rect()
 
     #vrcholy
     #   B C D E
@@ -236,6 +236,8 @@ def opicky_level(pg, screen, level_status, level_max):
         #set text
         screen.blit(intro_text_shade, intro_text_shade_rect)
         screen.blit(intro_text, intro_rect)
+        screen.blit(intro_text_shade2, intro_text_shade_rect2)
+        screen.blit(intro_text2, intro_rect2)
         
         #home
         surface_home_rect[0] = pg.display.Info().current_w - images['back'].get_width()
@@ -246,6 +248,8 @@ def opicky_level(pg, screen, level_status, level_max):
         screen.blit(images['back'], images['back_rect'])   
 
         #helping
+        text_help_surface = text_help_font.render("Zatiaľ získaných: " + str(level.act_value), True, const['color'].BLACK)
+        text_help_rect = text_help_surface.get_rect()
             #rect
         surface_help_rect[0] = level.act_pos[0]
         surface_help_rect[1] = level.act_pos[1]
@@ -256,11 +260,6 @@ def opicky_level(pg, screen, level_status, level_max):
             #text
         text_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width(), 20)
         screen.blit(text_help_surface, text_help_rect)
-            #frogs
-        #frog_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width() + 70, 10)
-        #screen.blit(frog_help, frog_help_rect)
-        #frog_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width() + 150, 10)
-        #screen.blit(frog_help, frog_help_rect)
 
         #info level
         for star in range(level_max):
@@ -315,10 +314,10 @@ def opicky_level(pg, screen, level_status, level_max):
         #over help
         if surface_help_rect.collidepoint(mouse_coor):
             if level.act_pos[0] >= level.start_pos[0] - level.max_off:
-                level.act_pos[0] -= 6
+                level.act_pos[0] -= 10
         else:
             if level.act_pos[0] < level.start_pos[0]:
-                level.act_pos[0] += 6
+                level.act_pos[0] += 15
             
         #clicked on of the vertex
         if mouse_clicked and mouse_coor != (0,0):
