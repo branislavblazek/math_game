@@ -1,4 +1,5 @@
 from opicky.main_obj import Level, Point, Win, Lose
+from opicky.opicky_connections import all_connections
 from pygame.locals import *
 import sys
 import random
@@ -13,7 +14,8 @@ const['game'] = None
 const['color'] = files.colors.Consts_colors()
 const['window'] = files.window.Consts_window()
 
-def opicky_level(pg, screen, level_status, level_max):
+def opicky_level(pg, screen, level_status, level_max, index):
+    print(index)
     clock = pg.time.Clock()
     level = Level(pg)
     #actions
@@ -21,6 +23,9 @@ def opicky_level(pg, screen, level_status, level_max):
     mouse_coor = (0,0)
     #get images
     images = level.load_images()
+    #get connections
+    getted_connection = all_connections()
+    getted_connection = getted_connection[index]
     #exit
     exit_code = -1
     #animations
@@ -85,16 +90,7 @@ def opicky_level(pg, screen, level_status, level_max):
         ['I', 'H', 'D', 'E', 'J'],
         ['J', 'E', 'I']
     )
-    connections = (
-        'A B', 'A F',
-        'B G', 'B C',
-        'C F', 'C H',
-        'D H', 'D I',
-        'E I', 'E J',
-        'G H',
-        'H I',
-        'I J'
-    )
+    connections = getted_connection
     susedia = []
     for connection in connections:
         start, to = connection.split(' ')
@@ -328,8 +324,7 @@ def opicky_level(pg, screen, level_status, level_max):
                         level.vertex_active = vrchol[0] 
                         level.vertex_path.append(level.vertex_active)
                         level.act_value += vrchol[1].value
-                        print(vrchol[1].value)
-                        print(level.act_value)
+    
                     break
         #</MOUSE ACTIONS>
 
