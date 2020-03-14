@@ -314,7 +314,7 @@ def opicky_level(pg, screen, level_status, level_max, index):
                 level.act_pos[0] += 15
             
         #clicked on of the vertex
-        if mouse_clicked and mouse_coor != (0,0):
+        if mouse_clicked and mouse_coor != (0,0) and exit_code not in (0,1):
             for vrchol in vrcholy.items():
                 if vrchol[1].rect.collidepoint(mouse_coor):
                     mouse_clicked = False
