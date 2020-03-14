@@ -34,7 +34,7 @@ def game_intro():
 
     mouse_coors = [0,0]
 
-    locked = [1,1,1]
+    locked = [0,0,0]
     #-----PODKLAD
     grass = pygame.image.load('resources/grass.png')
     grass = pygame.transform.scale(grass, (1143, 850))
@@ -186,8 +186,8 @@ def game_intro():
                 elif game2_rect.collidepoint(mouse_coors) and locked[0] == 1:
                     #-----START ZABKY
                     value = zabky_main_func(pygame, screen)
-                    if locked[0] == 0:
-                        locked[0] = value
+                    if locked[1] == 0:
+                        locked[1] = value
                 elif game3_rect.collidepoint(mouse_coors) and locked[1] == 1:
                     #-----START OPICKY
                     value = opicky_main_func(pygame, screen)
