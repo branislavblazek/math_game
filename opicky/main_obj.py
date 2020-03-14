@@ -44,7 +44,8 @@ class Level:
             "point": self.pg.image.load(path + 'vrchol.png'),
             'point2': self.pg.image.load(path + 'vrchol2.png'),
             'monkey': self.pg.image.load(path + 'monkey_org.png'),
-            'lano': self.pg.image.load(path + 'lano.png')
+            'lano': self.pg.image.load(path + 'lano.png'),
+            'finish': self.pg.image.load(path + 'finish.png')
         }
         images['back_rect'] = images['back'].get_rect()
         images['q_mark_rect'] = images['q_mark'].get_rect()

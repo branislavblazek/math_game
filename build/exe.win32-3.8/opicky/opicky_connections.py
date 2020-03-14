@@ -50,7 +50,7 @@ def all_connections():
         'A B', 'A F',
         'B F', 'B G',
         'C F', 'C H',
-        'D G', 'D E',
+        'D G', 'D E', 'D H',
         'E I', 'E J',
         'H I',
         'I J'

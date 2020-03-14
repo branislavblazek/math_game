@@ -32,13 +32,20 @@ def opicky_level(pg, screen, level_status, level_max, index):
     win_animacia = Win(pg, screen)
     lose_animacia = Lose(pg, screen)
     #--------TEXT
-    intro_text, intro_rect = level.generate_text('Nájdi cestu s najmenším súčtom čísel.', 160, const['window'].WIDTH, const['color'].BLACK)
-    intro_text_shade, intro_text_shade_rect = level.generate_text('Nájdi cestu s najmenším súčtom čísel.', 160,const['window'].WIDTH, const['color'].WHITE)
+    intro = 'Pomôž opičke dostať sa k banánom'
+    intro_text, intro_rect = level.generate_text(intro, 160, const['window'].WIDTH, const['color'].BLACK)
+    intro_text_shade, intro_text_shade_rect = level.generate_text(intro, 160,const['window'].WIDTH, const['color'].WHITE)
     intro_text_shade_rect.left -= 4
 
-    intro_text2, intro_rect2 = level.generate_text('Na skočené vrcholy nemôžeš skočiť znova!', 220, const['window'].WIDTH, const['color'].BLACK)
-    intro_text_shade2, intro_text_shade_rect2 =  level.generate_text('Na skočené vrcholy nemôžeš skočiť znova!', 220, const['window'].WIDTH, const['color'].WHITE)
+    intro2 = 'najkratšou cestou. Na každej križovatke sa môžeš'
+    intro_text2, intro_rect2 = level.generate_text(intro2, 220, const['window'].WIDTH, const['color'].BLACK)
+    intro_text_shade2, intro_text_shade_rect2 =  level.generate_text(intro2, 220, const['window'].WIDTH, const['color'].WHITE)
     intro_text_shade_rect2.left -= 4
+
+    intro3 = 'zdržať iba raz a o napísané číslo.'
+    intro_text3, intro_rect3 = level.generate_text(intro3, 280, const['window'].WIDTH, const['color'].BLACK)
+    intro_text_shade3, intro_text_shade_rect3 = level.generate_text(intro3, 280, const['window'].WIDTH, const['color'].WHITE)
+    intro_text_shade_rect3.left -= 4
 
     #-------HOME BUTTON
     images['back_rect'].topleft = (0,pg.display.Info().current_h-images['back'].get_height())
@@ -73,7 +80,7 @@ def opicky_level(pg, screen, level_status, level_max, index):
     left = (normal_width - level.table_width) * 0.5
     top = (normal_height - level.table_height) * 0.75
     if screen_type == 2:
-        top += 50
+        top += 90
 
     #pg.draw.rect(screen, const['color'].RED, (left, top, level.table_width, level.table_height), 8)
 
@@ -185,6 +192,11 @@ def opicky_level(pg, screen, level_status, level_max, index):
     lana_images['type5_flip'] = pg.transform.flip(lana_images['type5'], False, True)
     lana_images['type6'] = pg.transform.rotozoom(lana_images['type5'], 80, 1)
 
+    #finish
+    finish = images['finish']
+    finish_rect = finish.get_rect()
+    finish_rect.center = vrcholy['J'].rect.center
+
     #cisla
     cisla_obj = []
     for name, obj in vrcholy.items():
@@ -236,6 +248,8 @@ def opicky_level(pg, screen, level_status, level_max, index):
         screen.blit(intro_text, intro_rect)
         screen.blit(intro_text_shade2, intro_text_shade_rect2)
         screen.blit(intro_text2, intro_rect2)
+        screen.blit(intro_text_shade3, intro_text_shade_rect3)
+        screen.blit(intro_text3, intro_rect3)
         
         #home
         surface_home_rect[0] = pg.display.Info().current_w - images['back'].get_width()
@@ -289,6 +303,9 @@ def opicky_level(pg, screen, level_status, level_max, index):
         #vrcholy:
         for vrchol in vrcholy.items():
             screen.blit(*vrchol[1].coords)
+
+        #bababanaaaaa
+        screen.blit(finish, finish_rect)
 
         #cisla:
         for a, b in cisla_obj:

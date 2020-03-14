@@ -34,7 +34,7 @@ def game_intro():
 
     mouse_coors = [0,0]
 
-    locked = [0,0,0]
+    locked = const['window'].USER
     #-----PODKLAD
     grass = pygame.image.load('resources/grass.png')
     grass = pygame.transform.scale(grass, (1143, 850))
