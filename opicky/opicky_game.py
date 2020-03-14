@@ -15,7 +15,6 @@ const['color'] = files.colors.Consts_colors()
 const['window'] = files.window.Consts_window()
 
 def opicky_level(pg, screen, level_status, level_max, index):
-    print(index)
     clock = pg.time.Clock()
     level = Level(pg)
     #actions
@@ -147,7 +146,6 @@ def opicky_level(pg, screen, level_status, level_max, index):
         graf[ord(zaciatocny)-65] = indexy_vedla
 
     level.correct_ans = level.dijkstra(graf, [0,0], [9,0])
-    print(level.correct_ans)
 
     #start point
     left_s = ((left+level.point_rest/2) - level.point_size) / 2
@@ -191,7 +189,7 @@ def opicky_level(pg, screen, level_status, level_max, index):
             continue 
         value, coors = obj.generate_number()
         intro_textObj = pg.font.SysFont('impact', 50)
-        intro_textSurfaceObj = intro_textObj.render(str(value), True, const['color'].RED)
+        intro_textSurfaceObj = intro_textObj.render(str(value), True, const['color'].WHITE)
         intro_textRectObj = intro_textSurfaceObj.get_rect()
         intro_textRectObj.center = coors
 

@@ -11,3 +11,5 @@ class Consts_colors:
         self.PURPLE   = (255,   0, 255)
         self.CYAN     = (  0, 255, 255)
         self.BLACK    = (  0,   0,   0)
+        self.BROWN_1  = (197, 155,  93)
+        self.BROWN_2  = (151,  97,  47)
