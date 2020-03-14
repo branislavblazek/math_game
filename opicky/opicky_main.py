@@ -8,6 +8,7 @@ def opicky_main_func(pg, screen):
 
     while level_status < level_max:
         cislo = random.randint(0,5)
+        cislo = 5
         action = opicky_level(pg, screen, level_status, level_max, cislo)
         if action == 1:
             level_status += 1

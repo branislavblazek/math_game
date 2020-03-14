@@ -47,7 +47,7 @@ def game_intro():
     road_down = pygame.transform.flip(road_down, True, True)
     road_middle = pygame.transform.flip(road, True, False)
     #LOCK IMAGE
-    lock = pygame.image.load('resources/lock3.png')
+    lock = pygame.image.load('resources/lock.png')
     #lock = pygame.transform.scale(lock, (200,200))
     lock_rect = lock.get_rect()
 
@@ -66,9 +66,9 @@ def game_intro():
         game1_rect.topleft = (x1, x2)
         game1_maskot_obj.max_off = 200
     elif screen_type == 2:
-        game1 = pygame.transform.scale(game1, (450,258))
+        game1 = pygame.transform.scale(game1, (340,266))
         game1_rect = game1.get_rect()
-        game1_rect.topleft = (120,340)
+        game1_rect.topleft = (150,360)
         game1_maskot = pygame.transform.scale(game1_maskot, (101,194))
         game1_maskot_obj = files.intro_obj.Mascot_animation((310,385))
 
@@ -88,16 +88,16 @@ def game_intro():
         game2_lock_rect = game2.get_rect()
         game2_lock_rect.topleft = (x1, x2)
     elif screen_type == 2:
-        game2 = pygame.transform.scale(game2, (450,258))
-        game2_lock = pygame.transform.scale(game2_lock, (450,258))
+        game2 = pygame.transform.scale(game2, (340,266))
+        game2_lock = pygame.transform.scale(game2_lock, (340,266))
         game2_maskot = pygame.transform.scale(game2_maskot, (113, 120))
         game2_maskot_obj = files.intro_obj.Mascot_animation((670, 200))
         game2_maskot_obj.max_off = 80
         game2_rect = game2.get_rect()
-        game2_rect.topleft = (520, 190)
+        game2_rect.topleft = (600, 170)
         #lock
         game2_lock_rect = game2_lock.get_rect()
-        game2_rect.topleft = (520, 190)
+        game2_lock_rect.topleft = (520, 190)
 
     #-----TRETI DOMCEK
     game3 = pygame.image.load('resources/home.png')
@@ -123,7 +123,8 @@ def game_intro():
         game3_lock_rect = game3_lock.get_rect()
         game3_rect.topleft = (10, 20)
         game3_lock_rect.topleft = (10, 20)
-        game3_maskot_obj = files.intro_obj.Mascot_animation((x1, x2))
+        game3_maskot_obj = files.intro_obj.Mascot_animation((x1+290, x2+30), True)
+        game3_maskot_obj.max_off = 90
 
     #-----AUTORI
     autor_textObj = pygame.font.SysFont('verdana', 16)
@@ -179,13 +180,19 @@ def game_intro():
                 mouse_coors = event.pos
                 if game1_rect.collidepoint(mouse_coors):
                     #-----START ZAJO
-                    locked[0] = zajo_main_func(pygame, screen)
+                    value = zajo_main_func(pygame, screen)
+                    if locked[0] == 0:
+                        locked[0] = value
                 elif game2_rect.collidepoint(mouse_coors) and locked[0] == 1:
                     #-----START ZABKY
-                    locked[1] = zabky_main_func(pygame, screen)
+                    value = zabky_main_func(pygame, screen)
+                    if locked[0] == 0:
+                        locked[0] = value
                 elif game3_rect.collidepoint(mouse_coors) and locked[1] == 1:
                     #-----START OPICKY
-                    locked[2] = opicky_main_func(pygame, screen)
+                    value = opicky_main_func(pygame, screen)
+                    if locked[0] == 0:
+                        locked[0] = value
                     
         screen.blit(grass, grass_rect)
 
@@ -198,7 +205,7 @@ def game_intro():
 
         screen.blit(game3_maskot, game3_maskot_obj.position())
 
-        if locked[1] == 1:
+        if locked[1] == 1 and locked[0] == 1:
             screen.blit(game3, game3_rect)
         else:
             screen.blit(game3_lock, game3_lock_rect)
@@ -216,6 +223,7 @@ def game_intro():
             screen.blit(game2_lock, game2_lock_rect)
             stred = game2_lock_rect.center
             lock_rect.center = stred
+            lock_rect.left -= 40
             screen.blit(lock, lock_rect)
 
         screen.blit(autor_textSurfaceObj, autor_textRectObj)

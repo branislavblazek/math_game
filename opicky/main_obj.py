@@ -21,9 +21,16 @@ class Level:
         #for monkey
         self.monkey_width = 150
         self.monkey_height = 190
+        self.pos = [0,476]
+        self.speed = 10
+        self.tole = 5
+        self.can_end = False
+        self.vynutene_skoncenie = False
         #for path
         self.correct_ans = -1
         self.act_value = 0
+        self.done = 0
+        self.in_end = False
 
     def load_images(self):
         anim = files.animation_images.Get_images(self.pg)
@@ -103,10 +110,38 @@ class Level:
         return polohy
 
     def monkey_coords(self):
-        left, top = self.vrcholy[self.vertex_active].rect.center
-        left -= self.monkey_width // 2 + 15
-        top -= self.monkey_height // 2 + 60
-        return left, top
+        #kolko ich ostava spravit
+        task = self.vertex_path[self.done:]
+        
+        if len(task):
+            destination = list(self.vrcholy[task[0]].rect.center)
+            if self.pos[0] in range(destination[0]-self.tole, destination[0]+self.tole) and self.pos[1] in range(destination[1]-self.tole, destination[1]+self.tole):
+                self.done += 1
+                if self.vynutene_skoncenie:
+                    self.in_end = True
+                if self.vertex_path[-1] == 'J':
+                    self.in_end = True
+                
+            else:
+                if self.pos[0] < destination[0]-self.tole and destination[0]:
+                    self.pos[0] += self.speed
+                elif self.pos[0] > destination[0]+self.tole and destination[0]:
+                    self.pos[0] -= self.speed
+ 
+                if self.pos[1] < destination[1]-self.tole and destination[1]:
+                    self.pos[1] += self.speed
+                elif self.pos[1] > destination[1]+self.tole and destination[1]:
+                    self.pos[1] -= self.speed
+
+        if self.vertex_path[-1] == 'J' and len(task) == 0 and self.in_end:
+            self.can_end = True
+        if len(task) == 0 and self.in_end:
+            self.can_end = True
+
+        x = self.pos[0] - (self.monkey_width // 2 + 15)
+        y = self.pos[1] - (self.monkey_height // 2 + 60)
+
+        return x, y
 
     def generate_text(self, text, top, width, color):
         intro_textObj = self.pg.font.SysFont('impact', 46)

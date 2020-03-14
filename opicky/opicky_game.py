@@ -15,6 +15,7 @@ const['color'] = files.colors.Consts_colors()
 const['window'] = files.window.Consts_window()
 
 def opicky_level(pg, screen, level_status, level_max, index):
+    screen_type = 1 if pg.display.Info().current_h > 768 else 2
     clock = pg.time.Clock()
     level = Level(pg)
     #actions
@@ -71,6 +72,8 @@ def opicky_level(pg, screen, level_status, level_max, index):
     normal_height = pg.display.Info().current_h
     left = (normal_width - level.table_width) * 0.5
     top = (normal_height - level.table_height) * 0.75
+    if screen_type == 2:
+        top += 50
 
     #pg.draw.rect(screen, const['color'].RED, (left, top, level.table_width, level.table_height), 8)
 
@@ -215,11 +218,12 @@ def opicky_level(pg, screen, level_status, level_max, index):
         for sused in vrcholy[level.vertex_active].neig:
             if vrcholy[sused].type == 1:
                 pocet += 1
-        if pocet == 0:
+        if pocet == 0 and level.vertex_active != 'J':
             if level.act_value == level.correct_ans:
                 exit_code = 1
             else:
                 exit_code = 0
+                level.vynutene_skoncenie = True
 
         #</CHECKING>
 
@@ -239,7 +243,14 @@ def opicky_level(pg, screen, level_status, level_max, index):
         images['back_rect'][0] = pg.display.Info().current_w - images['back'].get_width()
         images['back_rect'][1] = pg.display.Info().current_h - images['back'].get_height()
         screen.blit(surface_home, surface_home_rect)
-        screen.blit(images['back'], images['back_rect'])   
+        screen.blit(images['back'], images['back_rect']) 
+
+        #info level
+        for star in range(level_max):
+            if star < level_status:
+                screen.blit(images['banana_full'], (star * 80 + 20, 25))
+            else:
+                screen.blit(images['banana_null'], (star * 80 + 20, 25))
 
         #helping
         text_help_surface = text_help_font.render("Zatiaľ získaných: " + str(level.act_value), True, const['color'].BLACK)
@@ -254,13 +265,6 @@ def opicky_level(pg, screen, level_status, level_max, index):
             #text
         text_help_rect.topleft = (level.act_pos[0] + images['q_mark'].get_width(), 20)
         screen.blit(text_help_surface, text_help_rect)
-
-        #info level
-        for star in range(level_max):
-            if star < level_status:
-                screen.blit(images['banana_full'], (star * 80 + 20, 25))
-            else:
-                screen.blit(images['banana_null'], (star * 80 + 20, 25))
 
         #lana
         for types in coors_lana.items():
@@ -332,8 +336,7 @@ def opicky_level(pg, screen, level_status, level_max, index):
             #for frog in frogs:
             #    if frog.is_jumping:
             #        can_return = False
-
-            if can_return:
+            if can_return and level.can_end:
                 if exit_code == 1:
                     win_animacia.animate()
                     if not win_animacia.is_animating:
@@ -354,4 +357,4 @@ def opicky_level(pg, screen, level_status, level_max, index):
                 mouse_clicked = True
 
         pg.display.flip()
-        clock.tick(60)
+        clock.tick(30)
