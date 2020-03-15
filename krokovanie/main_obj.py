@@ -97,6 +97,7 @@ class Level:
             "rock": self.pg.image.load(path + 'rock2.png'),
             "arrow_to": self.pg.image.load(path + 'arrow22.png'),
             "arrow_back": self.pg.image.load(path + 'arrow21.png'),
+            "arrow_show_to": self.pg.image.load(path + 'arrow20.png'),
             "star_null": self.pg.image.load(path + 'mrkva22.png'),
             "star_full": self.pg.image.load(path + 'mrkva2.png'),
             "back": anim.back,
@@ -107,6 +108,7 @@ class Level:
         images["rock"] = self.pg.transform.scale(images["rock"], (width,new_height))
         images['back_rect'] = images['back'].get_rect()
         images['q_mark_rect'] = images['q_mark'].get_rect()
+        images['arrow_show_back'] = self.pg.transform.flip(images['arrow_show_to'], True, False)
 
         return images, new_height
 

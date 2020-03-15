@@ -78,6 +78,7 @@ def zajo_level(pg, screen, level_status, level_max):
     arrow_help_rect = arrow_help.get_rect()
     #main loop
     level.start = True
+    can_highlight = False
     while True:
         # fill the screen with the grass
         back_pos = (0,-50) if screen_type == 1 else (0,-150)
@@ -158,6 +159,8 @@ def zajo_level(pg, screen, level_status, level_max):
         #calculate for resolutions
         image1 = images["arrow_to"]
         image2 = images["arrow_back"]
+        image1_show = images["arrow_show_to"]
+        image2_show = images["arrow_show_back"]
         y = 200
         m = 92
         left_offset = 0
@@ -165,16 +168,23 @@ def zajo_level(pg, screen, level_status, level_max):
         if screen_type == 2:
             image1 = pg.transform.scale(image1, (68,41))
             image2 = pg.transform.scale(image2, (68,41))
+            image1_show = pg.transform.scale(image1_show, (68, 41))
+            image2_show = pg.transform.scale(image2_show, (68, 41))
             y = 150
             m = 75
             left_offset += 60
 
         left_offset += (const['window'].WIDTH - images["arrow_to"].get_rect().size[0] * ins_num) * 0.5
         for i in range(len(ins)):
+            if i == level.now_on_index+1 and can_highlight:
+                image_type = 1
+            else:
+                image_type = 0
+
             if ins[i] == 1:
-                screen.blit(image1, (i*m + left_offset, y))
+                screen.blit(image1_show if image_type else image1, (i*m + left_offset, y))
             elif ins[i] == -1:
-                screen.blit(image2, (i*m + left_offset, y))
+                screen.blit(image2_show if image_type else image2, (i*m + left_offset, y))
 
         # place bunny
         screen.blit(images["bunny"], level.bunny_coors())
@@ -233,6 +243,7 @@ def zajo_level(pg, screen, level_status, level_max):
                 count_jump = len(ins) - 1
                 #print('index: ' + str(index) + ' moverock: ' +  str(move_rock))
                 level.going_to_jump = count_jump
+                can_highlight = True
 
         #end game
         if level.now_on_index == level.going_to_jump and level.correct:
