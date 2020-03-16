@@ -26,7 +26,8 @@ def all_connections():
         'C F', 'C D',
         'D H', 'D I',
         'E H', 'E J',
-        'G H'
+        'G H',
+        'I J'
     ),
     (
         'A B', 'A F',
